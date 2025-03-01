@@ -44,15 +44,15 @@ class Ui_MainWindow(object):
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.verticalLayout_5 = QVBoxLayout(self.groupBox_2)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.label_2 = QLabel(self.groupBox_2)
-        self.label_2.setObjectName(u"label_2")
-
-        self.verticalLayout_5.addWidget(self.label_2)
-
-        self.timeLabel = QTextEdit(self.groupBox_2)
+        self.timeLabel = QLabel(self.groupBox_2)
         self.timeLabel.setObjectName(u"timeLabel")
 
         self.verticalLayout_5.addWidget(self.timeLabel)
+
+        self.timeLabelx = QTextEdit(self.groupBox_2)
+        self.timeLabelx.setObjectName(u"timeLabelx")
+
+        self.verticalLayout_5.addWidget(self.timeLabelx)
 
         self.label = QLabel(self.groupBox_2)
         self.label.setObjectName(u"label")
@@ -151,7 +151,12 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"GroupBox", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Timer (displays current time)", None))
+        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"Timer (displays current time)", None))
+        self.timeLabelx.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"App Usage", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Music Controls", None))
         self.music.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
