@@ -6,15 +6,15 @@ class AppTimerTask(QThread):
   def __init__(self, parent = None):
     super().__init__(parent)
     self.timeout = MAX_ALLOWED_TIME
+    self.running = True
 
   def run(self):
-    while True:
+    while self.running:
       self.sleep(1)
       self.timeout -= 1
       if self.timeout == 0:
         print("You have spent too much time on an unwhitelisted app!")
         break
-    self.quit()
 
 class WindowTracker():
   def __init__(self, app, whitelist=[]):
@@ -24,9 +24,8 @@ class WindowTracker():
 
   def window_changed(self, appName):
     if self.currentTimeoutTask:
-      self.currentTimeoutTask.quit()
+      self.currentTimeoutTask.running = False
       self.currentTimeoutTask = None
-      print('quit previous')
 
     if appName not in self.whitelistedApps:
       self.currentTimeoutTask = AppTimerTask()
