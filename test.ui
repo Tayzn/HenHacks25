@@ -103,7 +103,17 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="QTextEdit" name="toDoList"/>
+          <widget class="QListWidget" name="taskList"/>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="taskInput"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addTaskButton">
+           <property name="text">
+            <string>Add Task</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

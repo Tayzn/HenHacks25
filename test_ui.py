@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QLabel,
-    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
-    QSlider, QStatusBar, QTextEdit, QVBoxLayout,
-    QWidget)
+    QLineEdit, QListWidget, QListWidgetItem, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QSlider,
+    QStatusBar, QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -103,10 +103,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.label_4)
 
-        self.toDoList = QTextEdit(self.groupBox)
-        self.toDoList.setObjectName(u"toDoList")
+        self.taskList = QListWidget(self.groupBox)
+        self.taskList.setObjectName(u"taskList")
 
-        self.verticalLayout_4.addWidget(self.toDoList)
+        self.verticalLayout_4.addWidget(self.taskList)
+
+        self.taskInput = QLineEdit(self.groupBox)
+        self.taskInput.setObjectName(u"taskInput")
+
+        self.verticalLayout_4.addWidget(self.taskInput)
+
+        self.addTaskButton = QPushButton(self.groupBox)
+        self.addTaskButton.setObjectName(u"addTaskButton")
+
+        self.verticalLayout_4.addWidget(self.addTaskButton)
 
 
         self.horizontalLayout_7.addWidget(self.groupBox)
@@ -147,5 +157,6 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"GroupBox", None))
         self.focusMode.setText(QCoreApplication.translate("MainWindow", u"Focus Mode", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"To-Do List", None))
+        self.addTaskButton.setText(QCoreApplication.translate("MainWindow", u"Add Task", None))
     # retranslateUi
 
