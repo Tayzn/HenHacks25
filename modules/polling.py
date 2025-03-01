@@ -7,8 +7,9 @@ def get_name_from_pid(pid):
     return psutil.Process(pid).name()
 
 class PollingThread(QThread):
-    def __init__(self, parent = None):
+    def __init__(self, app, parent = None):
         super().__init__(parent)
+        self.app = app
         self.storedActiveWindowName = ""
 
     def run(self):
@@ -18,6 +19,6 @@ class PollingThread(QThread):
 
             if currentAppName != self.storedActiveWindowName:
                 self.storedActiveWindowName = currentAppName
-                print("Changed!", currentWindow.title)
-                
+                self.app.get_app_task("WindowTracker").window_changed(currentAppName)
+
             time.sleep(0.3)
