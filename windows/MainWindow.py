@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         # Resize and position window
         self.resize(800, 600)
         self.move_to_bottom_right()
-        self.load_stylesheet("style.qss")
+        self.load_stylesheet("./assets/style.qss")
 
         # UI Elements
         self.time_label = self.findChild(QLabel, "timeLabel")
@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
         self.reminder_timer.start(60000)
 
         # System Tray Setup
-        self.tray_icon = QSystemTrayIcon(QIcon("Tomato-Whole-Red-1-Clip-Art.png"), self)
+        self.tray_icon = QSystemTrayIcon(QIcon("./assets/tomato.png"), self)
         self.tray_icon.setToolTip("PomKit")
         tray_menu = QMenu()
         tray_menu.addAction(QAction("Show", self, triggered=self.show_window))
@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
         self.audio_output = QAudioOutput()
         self.media_player = QMediaPlayer()
         self.media_player.setAudioOutput(self.audio_output)
-        self.media_player.setSource(QUrl.fromLocalFile("mixkit-happy-bells-notification-937.wav"))  # Path to your sound file
+        self.media_player.setSource(QUrl.fromLocalFile("./assets/bells.wav"))  # Path to your sound file
         self.audio_output.setVolume(0.5)  # Adjust volume
         self.media_player.play()
 
