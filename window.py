@@ -6,6 +6,8 @@ from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QPushButton, QLabel, QListWidget, QLineEdit, 
     QListWidgetItem, QSystemTrayIcon, QMenu, QTimeEdit, QMessageBox, QGroupBox
 )
+from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices
+from PyQt6.QtCore import QUrl
 from PyQt6.QtGui import QGuiApplication, QAction, QIcon
 from PyQt6.QtCore import QTimer, QTime, Qt, QPropertyAnimation, QEasingCurve
 from datetime import datetime, timedelta
@@ -13,7 +15,19 @@ from datetime import datetime, timedelta
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        
+        
+        # Testing audio
         uic.loadUi("test.ui", self)
+
+        audio_outputs = QMediaDevices.audioOutputs()
+        if not audio_outputs:
+            print("No audio output devices detected!")
+        else:
+            print("Available audio devices:")
+            for device in audio_outputs:
+                print(device.description())
+
 
         # Resize and position window
         self.resize(800, 600)
@@ -47,7 +61,7 @@ class MyWindow(QMainWindow):
         self.pause_pomodoro_button.clicked.connect(self.pause_pomodoro)
         self.reset_pomodoro_button.clicked.connect(self.reset_pomodoro)
         
-        self.time_for_break= True;
+        self.time_for_break= True
         
 
         # Timers
@@ -86,6 +100,15 @@ class MyWindow(QMainWindow):
         
         self.reminders = []
         self.update_time()
+        
+        #Sound effect
+        self.audio_output = QAudioOutput()
+        self.media_player = QMediaPlayer()
+        self.media_player.setAudioOutput(self.audio_output)
+        self.media_player.setSource(QUrl.fromLocalFile("mixkit-happy-bells-notification-937.wav"))  # Path to your sound file
+        self.audio_output.setVolume(0.5)  # Adjust volume
+        self.media_player.play()
+
 
     def start_pomodoro(self):
         """Start the Pomodoro Timer and ensure display updates every second."""
