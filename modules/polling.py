@@ -15,6 +15,7 @@ class PollingThread(QThread):
     def run(self):
         while True:
             currentWindow = pywin.getActiveWindow()
+            if not currentWindow: continue
             currentAppName = get_name_from_pid(currentWindow.getPID())
 
             if currentAppName != self.storedActiveWindowName:

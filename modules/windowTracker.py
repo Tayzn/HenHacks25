@@ -36,6 +36,11 @@ class WindowTracker():
     self.whitelistedApps = whitelist
     currentWindow = self.app.get_app_task("PollingThread").get_active_window_name()
     self.window_changed(currentWindow)
+    
+    mainWindowPreview = self.app.get_window("MainWindow").whitelistPreview
+    mainWindowPreview.clear()
+    for whitelisted in whitelist:
+      mainWindowPreview.addItem(whitelisted)
 
 
 
