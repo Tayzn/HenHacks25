@@ -118,6 +118,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.addTaskButton)
 
+        self.clearCheckedButton = QPushButton(self.groupBox)
+        self.clearCheckedButton.setObjectName(u"clearCheckedButton")
+
+        self.verticalLayout_4.addWidget(self.clearCheckedButton)
+
 
         self.horizontalLayout_7.addWidget(self.groupBox)
 
@@ -158,5 +163,6 @@ class Ui_MainWindow(object):
         self.focusMode.setText(QCoreApplication.translate("MainWindow", u"Focus Mode", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"To-Do List", None))
         self.addTaskButton.setText(QCoreApplication.translate("MainWindow", u"Add Task", None))
+        self.clearCheckedButton.setText(QCoreApplication.translate("MainWindow", u"Clear Checked Items", None))
     # retranslateUi
 
