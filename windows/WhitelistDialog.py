@@ -18,8 +18,6 @@ class WhitelistDialog(QDialog):
 
         self.button.clicked.connect(self.on_button_click)
 
-        self.load_apps()
-
     def showEvent(self, a0):
         self.load_apps()
         return super().showEvent(a0)
