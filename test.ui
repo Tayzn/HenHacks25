@@ -45,6 +45,26 @@
               </widget>
              </item>
              <item>
+              <widget class="QListView" name="appUsageList"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Pomodoro Timer</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="pomodoroTimer">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="startPomodoroButton">
                <property name="text">
                 <string>Start Pomodoro</string>
@@ -62,23 +82,6 @@
               <widget class="QPushButton" name="resetPomodoroButton">
                <property name="text">
                 <string>Reset Pomodoro</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Pomodoro Timer</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="pomodoroTimer">
-               <property name="text">
-                <string/>
                </property>
               </widget>
              </item>

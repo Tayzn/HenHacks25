@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QLabel,
-    QLineEdit, QListWidget, QListWidgetItem, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QSlider,
-    QStatusBar, QTimeEdit, QVBoxLayout, QWidget)
+    QLineEdit, QListView, QListWidget, QListWidgetItem,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QSlider, QStatusBar, QTimeEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -54,6 +55,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.label)
 
+        self.appUsageList = QListView(self.groupBox_2)
+        self.appUsageList.setObjectName(u"appUsageList")
+
+        self.verticalLayout_5.addWidget(self.appUsageList)
+
+        self.label_5 = QLabel(self.groupBox_2)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.verticalLayout_5.addWidget(self.label_5)
+
+        self.pomodoroTimer = QLineEdit(self.groupBox_2)
+        self.pomodoroTimer.setObjectName(u"pomodoroTimer")
+
+        self.verticalLayout_5.addWidget(self.pomodoroTimer)
+
         self.startPomodoroButton = QPushButton(self.groupBox_2)
         self.startPomodoroButton.setObjectName(u"startPomodoroButton")
 
@@ -68,17 +85,6 @@ class Ui_MainWindow(object):
         self.resetPomodoroButton.setObjectName(u"resetPomodoroButton")
 
         self.verticalLayout_5.addWidget(self.resetPomodoroButton)
-
-        self.label_5 = QLabel(self.groupBox_2)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-
-        self.verticalLayout_5.addWidget(self.label_5)
-
-        self.pomodoroTimer = QLineEdit(self.groupBox_2)
-        self.pomodoroTimer.setObjectName(u"pomodoroTimer")
-
-        self.verticalLayout_5.addWidget(self.pomodoroTimer)
 
         self.label_3 = QLabel(self.groupBox_2)
         self.label_3.setObjectName(u"label_3")
@@ -189,11 +195,11 @@ class Ui_MainWindow(object):
         self.groupBox_2.setTitle("")
         self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"Timer (displays current time)", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"App Usage", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Pomodoro Timer", None))
+        self.pomodoroTimer.setText("")
         self.startPomodoroButton.setText(QCoreApplication.translate("MainWindow", u"Start Pomodoro", None))
         self.pausePomodoroButton.setText(QCoreApplication.translate("MainWindow", u"Pause Pomodoro", None))
         self.resetPomodoroButton.setText(QCoreApplication.translate("MainWindow", u"Reset Pomodoro", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Pomodoro Timer", None))
-        self.pomodoroTimer.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Music Controls", None))
         self.groupBox.setTitle("")
         self.focusMode.setText(QCoreApplication.translate("MainWindow", u"Focus Mode", None))

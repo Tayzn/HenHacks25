@@ -4,7 +4,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from PyQt6 import uic
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QPushButton, QLabel, QListWidget, QLineEdit, 
-    QListWidgetItem, QSystemTrayIcon, QMenu, QTimeEdit, QMessageBox
+    QListWidgetItem, QSystemTrayIcon, QMenu, QTimeEdit, QMessageBox, QGroupBox
 )
 from PyQt6.QtGui import QGuiApplication, QAction, QIcon
 from PyQt6.QtCore import QTimer, QTime, Qt, QPropertyAnimation, QEasingCurve
