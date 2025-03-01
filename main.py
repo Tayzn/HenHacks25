@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QApplication
 from windows.ExampleWindow import ExampleWindow
+from windows.WhitelistDialog import WhitelistDialog
 from modules import polling, windowTracker
 
 class App():
@@ -16,6 +17,8 @@ class App():
     app = QApplication([])
     window = ExampleWindow()
     window.show()
+    testDialog = WhitelistDialog(self)
+    testDialog.show()
     app.exec()
 
   def get_app_task(self, task_name):

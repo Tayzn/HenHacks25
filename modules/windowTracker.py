@@ -30,7 +30,14 @@ class WindowTracker():
     if appName not in self.whitelistedApps:
       self.currentTimeoutTask = AppTimerTask()
       self.currentTimeoutTask.start()
-      print("Changed to non-whitelisted app!")
+      print("Changed to non-whitelisted app!", appName)
+
+  def update_whitelist(self, whitelist):
+    self.whitelistedApps = whitelist
+    currentWindow = self.app.get_app_task("PollingThread").get_active_window_name()
+    self.window_changed(currentWindow)
+
+
 
 
 
