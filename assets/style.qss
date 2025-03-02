@@ -13,8 +13,23 @@ QLabel {
 }
  /* Group Boxes */
 QGroupBox {
-    border: #88C0D0;
+    border: 2px solid #88C0D0;
+    border-radius: 8px;
+    padding: 10px; /* Space inside the box */
+    margin-top: 20px; /* Leaves space for the title */
 }
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* Adjust the title position */
+    padding: 3px 10px;
+    color: #88C0D0;
+    font-weight: bold;
+    font-family: "Arial";
+    /* border-radius: 5px; */
+}
+
+
 
 #timeLabel {
     color: #88C0D0;
