@@ -73,7 +73,7 @@
             </layout>
            </widget>
           </item>
-          <item row="9" column="0">
+          <item row="10" column="0">
            <widget class="QGroupBox" name="musicGroup">
             <property name="title">
              <string>Music Controls</string>
@@ -217,6 +217,13 @@
             </layout>
            </widget>
           </item>
+          <item row="9" column="0">
+           <widget class="QPushButton" name="focusMode">
+            <property name="text">
+             <string>Start Focus Mode</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -229,13 +236,6 @@
        <string/>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QPushButton" name="focusMode">
-         <property name="text">
-          <string>Focus Mode</string>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
