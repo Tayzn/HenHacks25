@@ -226,6 +226,9 @@ class MainWindow(QMainWindow):
     def show_reminder_dialog(self, message):
         QMessageBox.information(self, "Reminder Alert", f"Reminder: {message}")
 
+    def show_unfocused_alert(self):
+        QMessageBox.warning(self, "Getting off track!", "You have been in a non-whitelisted app for a while now...")
+
     def clear_checked_tasks(self):
         for i in range(self.task_list.count() - 1, -1, -1):
             item = self.task_list.item(i)
