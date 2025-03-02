@@ -42,6 +42,7 @@ class FocusManager():
       self.currentSession = FocusSession(self.app)
     elif self.currentSession:
       self.currentSession.close()
+    return self.focusMode
 
   def ping_app_time(self, appName):
     if not self.currentSession: return

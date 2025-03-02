@@ -1,7 +1,7 @@
 import vlc
 from PyQt6 import uic
 from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QTime, QTimer, QUrl
-from PyQt6.QtGui import QAction, QGuiApplication, QIcon, QShortcut
+from PyQt6.QtGui import QAction, QGuiApplication, QIcon, QShortcut, QColor
 from PyQt6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
 from PyQt6.QtWidgets import (
     QApplication,
@@ -15,6 +15,8 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QSlider,
     QSystemTrayIcon,
+    QGraphicsDropShadowEffect,
+    QGroupBox
 )
 
 UI_FILE = "././ui/main.ui"
@@ -57,6 +59,7 @@ class MainWindow(QMainWindow):
         self.musicTitleLabel = self.findChild(QLabel, "musicLabel")
         self.musicVolumeLabel = self.findChild(QLabel, "musicVolumeLabel")
         self.focusButton = self.findChild(QPushButton, "focusMode")
+        self.leftGroup = self.findChild(QGroupBox, "leftGroup")
 
         self.musicVolumeLabel.setText(f"Volume: {self.musicVolumeSlider.value()}%")
 
@@ -80,6 +83,7 @@ class MainWindow(QMainWindow):
         self.musicBrowseBtn.clicked.connect(self.on_music_browse)
         self.musicPlayPauseBtn.clicked.connect(self.on_music_playpause)
         self.focusButton.clicked.connect(self.app.get_app_task("FocusManager").toggle_focus_mode)
+        self.focusButton.clicked.connect(self.apply_shadow)
         self.musicVolumeSlider.valueChanged.connect(self.on_music_volume_change)
 
         # Timers
@@ -131,6 +135,35 @@ class MainWindow(QMainWindow):
         self.open_window_shortcut = QShortcut(Qt.Key.Key_F1, self)  # F1 keybind
         self.open_window_shortcut.activated.connect(self.show_window)
 
+    def apply_shadow(self):
+        """Applies or removes a drop shadow effect based on focus mode."""
+    
+        if self.focusMode:  # Check focus mode state
+            print("Applying shadow")
+            shadow1 = QGraphicsDropShadowEffect()
+            shadow1.setBlurRadius(20)
+            shadow1.setColor(QColor(255, 255, 255, 180))  # White shadow
+            shadow1.setOffset(0, 0)
+        
+            shadow2 = QGraphicsDropShadowEffect()
+            shadow2.setBlurRadius(20)
+            shadow2.setColor(QColor(255, 255, 255, 180))  # White shadow
+            shadow2.setOffset(0, 0)
+        
+            # Apply shadows
+            self.time_label.setGraphicsEffect(shadow1)
+            self.leftGroup.setGraphicsEffect(shadow2)
+            self.focusMode = False
+        else:
+            
+            #DOESN'T WoRK :(
+            # Remove shadows
+            print("Removing shadow")
+            print("Removing shadow effect")  # Debugging
+            self.time_label.setGraphicsEffect(None)
+            self.leftGroup.setGraphicsEffect(None)
+
+    
     def show_whitelist_dialog(self):
         self.app.show_window("WhitelistDialog")
 
