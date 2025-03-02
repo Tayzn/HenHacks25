@@ -252,9 +252,9 @@ class MainWindow(QMainWindow):
         event.ignore()
         self.hide()
         self.tray_icon.showMessage(
-            "To-Do List",
+            "FocusMato",
             "App minimized to tray",
-            QSystemTrayIcon.MessageIcon.Information,
+            QIcon("./assets/tomato.png"),
             2000,
         )
 
