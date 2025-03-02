@@ -38,10 +38,10 @@ class Ui_MainWindow(object):
         self.statusGroup.setObjectName(u"statusGroup")
         self.verticalLayout = QVBoxLayout(self.statusGroup)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label_6 = QLabel(self.statusGroup)
-        self.label_6.setObjectName(u"label_6")
+        self.timeLabel = QLabel(self.statusGroup)
+        self.timeLabel.setObjectName(u"timeLabel")
 
-        self.verticalLayout.addWidget(self.label_6)
+        self.verticalLayout.addWidget(self.timeLabel)
 
 
         self.verticalLayout_5.addWidget(self.statusGroup)
@@ -215,7 +215,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1119, 18))
+        self.menubar.setGeometry(QRect(0, 0, 1119, 26))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.leftGroup.setTitle("")
         self.statusGroup.setTitle(QCoreApplication.translate("MainWindow", u"Status", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.appsGroup.setTitle(QCoreApplication.translate("MainWindow", u"App Whitelist", None))
         self.appWhitelistButton.setText(QCoreApplication.translate("MainWindow", u"Configure App Whitelist", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"App Usage", None))

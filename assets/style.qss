@@ -14,8 +14,17 @@ QLabel {
  /* Group Boxes */
 QGroupBox {
     border: #88C0D0;
-
 }
+
+#timeLabel {
+    color: #88C0D0;
+    font-size: 32px;
+    padding: 5px;
+    border: 2px solid #88C0D0;
+    border-radius: 8px;
+}
+
+
 /* Buttons */
 QPushButton {
     background-color: #5E81AC;
