@@ -5,8 +5,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QMainWindow, QDialog
 
-WHITELIST_COLOR = "#ffffff"
-OTHER_COLOR = "#0000000"
+WHITELIST_COLOR = "#88C0D0"
+OTHER_COLOR = "#4C566A"
 
 class BarGraph(QWidget):
     def __init__(self, data, parent=None):
@@ -17,7 +17,7 @@ class BarGraph(QWidget):
         layout = QVBoxLayout(self)
 
         # Create a Matplotlib figure and axis
-        self.fig = Figure()
+        self.fig = plt.Figure()
         self.ax = self.fig.add_subplot(111)
 
         # Create the timeline
@@ -30,8 +30,12 @@ class BarGraph(QWidget):
     def plot_timeline(self, data):
         # Calculate total time per app using a defaultdict
         app_time = defaultdict(int)
+        app_whitelist = {}  # Dictionary to store whitelisted status of each app
+
         for item in data:
-            app_time[item["appName"].replace(".exe", "")] += item["time"]
+            app_name = item["appName"].replace(".exe", "")
+            app_time[app_name] += item["time"]
+            app_whitelist[app_name] = item.get("whitelisted", False)
 
         # Prepare data for plotting
         apps = list(app_time.keys())
@@ -41,8 +45,14 @@ class BarGraph(QWidget):
         bar_width = 0.4
         x_pos = range(len(apps))  # Set x positions for each app
 
-        # Plot the bars for each app
-        self.ax.bar(x_pos, total_times, width=bar_width)
+        # Assign colors based on whitelist status
+        colors = [
+            WHITELIST_COLOR if app_whitelist.get(app, False) else OTHER_COLOR
+            for app in apps
+        ]
+
+        # Plot the bars for each app with the appropriate color
+        self.ax.bar(x_pos, total_times, width=bar_width, color=colors)
 
         # Set labels and title
         self.ax.set_xticks(x_pos)
@@ -65,7 +75,7 @@ class PieGraph(QWidget):
         layout = QVBoxLayout(self)
 
         # Create a Matplotlib figure and axis
-        self.fig = Figure()
+        self.fig = plt.Figure()
         self.ax = self.fig.add_subplot(111)
 
         # Create the Pie chart
@@ -78,17 +88,26 @@ class PieGraph(QWidget):
     def plot_pie_chart(self, data):
         # Aggregate total time per app
         app_time = {}
+        app_whitelist = {}  # Dictionary to store whitelisted status of each app
+
+        # Process data to aggregate total time and store whitelist info
         for item in data:
             app_name = item["appName"].replace(".exe", "")
             app_time[app_name] = app_time.get(app_name, 0) + item["time"]
+            app_whitelist[app_name] = item.get("whitelisted", False)
 
         total_time = sum(app_time.values())  # Total duration for all apps
         if total_time == 0:
             return  # Avoid division by zero
 
-        labels = app_time.keys()
-        sizes = app_time.values()
-        colors = plt.cm.Paired.colors[: len(sizes)]  # Generate distinct colors
+        labels = list(app_time.keys())
+        sizes = list(app_time.values())
+
+        # Assign colors based on whitelist status
+        colors = [
+            WHITELIST_COLOR if app_whitelist.get(app, False) else OTHER_COLOR
+            for app in labels
+        ]
 
         # Plot the pie chart
         wedges, texts, autotexts = self.ax.pie(
@@ -104,16 +123,20 @@ class PieGraph(QWidget):
         )  # Equal aspect ratio ensures that pie is drawn as a circle.
 
 
-class TimelineGraph(QWidget):
+class TimelineGraph(QMainWindow):
     def __init__(self, data, parent=None):
         super().__init__(parent)
 
-        self.setWindowTitle("App Timeline View")
+        self.setWindowTitle("Matplotlib Timeline View with Text in Segments")
 
-        layout = QVBoxLayout(self)
+        # Initialize a QWidget to host the matplotlib canvas
+        widget = QWidget(self)
+        self.setCentralWidget(widget)
+
+        layout = QVBoxLayout(widget)
 
         # Create a Matplotlib figure and axis
-        self.fig = Figure()
+        self.fig = plt.Figure()
         self.ax = self.fig.add_subplot(111)
 
         # Create the timeline
@@ -132,14 +155,25 @@ class TimelineGraph(QWidget):
             app_name = item["appName"].replace(".exe", "")
             time = item["time"]
 
+            # Check if the app is whitelisted
+            whitelisted = item.get("whitelisted", False)
+            color = WHITELIST_COLOR if whitelisted else OTHER_COLOR
+
             # Draw the segment: use 'current_time' as the starting point for this segment
-            self.ax.barh(0, time, left=current_time, height=0.5, label=app_name)
+            self.ax.barh(
+                0,
+                time,
+                left=current_time,
+                height=0.5,
+                color=color,
+                label=app_name,
+            )
 
             # Add the text label in the middle of the segment
             self.ax.text(
                 current_time + time / 2,
                 0,
-                app_name,
+                f"{app_name}\n({time}s)",
                 ha="center",
                 va="center",
                 color="white",
