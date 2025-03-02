@@ -11,196 +11,204 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>FocusMato</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QGroupBox" name="leftGroup">
-      <property name="title">
-       <string/>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QGroupBox" name="statusGroup">
-         <property name="title">
-          <string>Status</string>
+        <widget class="QLabel" name="timeLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QLabel" name="timeLabel">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Time Display</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Focus Mode</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="appsGroup">
-         <property name="title">
-          <string>App Whitelist</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QPushButton" name="appWhitelistButton">
-            <property name="text">
-             <string>Configure App Whitelist</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QListWidget" name="mainWindowAppWhitelist">
-            <property name="selectionMode">
-             <enum>QAbstractItemView::NoSelection</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label">
          <property name="text">
-          <string>App Usage</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Pomodoro Timer</string>
+          <string>Time Display</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="pomodoroTimer">
+        <widget class="QLabel" name="label_3">
          <property name="text">
+          <string>Focus Mode</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="leftGroup">
+         <property name="title">
           <string/>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="startPomodoroButton">
-         <property name="text">
-          <string>Start Pomodoro</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pausePomodoroButton">
-         <property name="text">
-          <string>Pause Pomodoro</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="resetPomodoroButton">
-         <property name="text">
-          <string>Reset Pomodoro</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="musicGroup">
-         <property name="title">
-          <string>Music Controls</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QPushButton" name="musicBrowseRadioBtn">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="3" column="0">
+           <widget class="QLabel" name="label">
             <property name="text">
-             <string>Browse</string>
+             <string>App Usage</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="musicLabel">
-            <property name="text">
-             <string/>
+          <item row="2" column="0">
+           <widget class="QGroupBox" name="appsGroup">
+            <property name="title">
+             <string>App Whitelist</string>
             </property>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QPushButton" name="appWhitelistButton">
+               <property name="text">
+                <string>Configure App Whitelist</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="mainWindowAppWhitelist">
+               <property name="selectionMode">
+                <enum>QAbstractItemView::NoSelection</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
-          <item>
-           <spacer name="horizontalSpacer">
+          <item row="10" column="0">
+           <widget class="QGroupBox" name="musicGroup">
+            <property name="title">
+             <string>Music Controls</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="musicBrowseRadioBtn">
+               <property name="text">
+                <string>Browse</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="musicLabel">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="musicVolumeLabel">
+               <property name="text">
+                <string>Volume: 100%</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSlider" name="musicVolumeSlider">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximum">
+                <number>100</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="tickPosition">
+                <enum>QSlider::TicksBelow</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="musicPlayPauseBtn">
+               <property name="text">
+                <string>▶️</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <spacer name="verticalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>40</width>
-              <height>20</height>
+              <width>20</width>
+              <height>40</height>
              </size>
             </property>
            </spacer>
           </item>
-          <item>
-           <widget class="QLabel" name="musicVolumeLabel">
-            <property name="text">
-             <string>Volume: 100%</string>
+          <item row="4" column="0">
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="title">
+             <string>Pomodoro</string>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSlider" name="musicVolumeSlider">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="tickPosition">
-             <enum>QSlider::TicksBelow</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="musicPlayPauseBtn">
-            <property name="text">
-             <string>▶️</string>
-            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="pomodoroTimer">
+               <property name="text">
+                <string>WORK 00:00</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="startPomodoroButton">
+               <property name="text">
+                <string>Start/Pause</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="resetPomodoroButton">
+               <property name="text">
+                <string>Reset</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -279,17 +287,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1119</width>
-     <height>26</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

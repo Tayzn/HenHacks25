@@ -1,26 +1,36 @@
-import vlc
 import os
 import sys
-from apscheduler.schedulers.background import BackgroundScheduler
-from PyQt6 import uic
-from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QPushButton, QLabel, QListWidget, QLineEdit, 
-    QListWidgetItem, QSystemTrayIcon, QMenu, QTimeEdit, QMessageBox, QGroupBox,
-    QSlider, QToolButton
-)
-from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices
-from PyQt6.QtCore import QUrl
-from PyQt6.QtGui import QGuiApplication, QAction, QIcon
-from PyQt6.QtCore import QTimer, QTime, Qt, QPropertyAnimation, QEasingCurve
 from datetime import datetime, timedelta
 
+import vlc
+from apscheduler.schedulers.background import BackgroundScheduler
+from PyQt6 import uic
+from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QTime, QTimer, QUrl
+from PyQt6.QtGui import QAction, QGuiApplication, QIcon
+from PyQt6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
+from PyQt6.QtWidgets import (
+    QApplication,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QSlider,
+    QSystemTrayIcon,
+    QTimeEdit,
+)
+
 UI_FILE = "././ui/main.ui"
+
 
 class MainWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        
+
         # Testing audio
         uic.loadUi(UI_FILE, self)
 
@@ -48,48 +58,48 @@ class MainWindow(QMainWindow):
         self.whitelistButton = self.findChild(QPushButton, "appWhitelistButton")
         self.whitelistPreview = self.findChild(QListWidget, "mainWindowAppWhitelist")
         self.musicBrowseBtn = self.findChild(QPushButton, "musicBrowseRadioBtn")
-        self.musicPlayPauseBtn = self.findChild(QToolButton, "musicPlayPauseBtn")
+        self.musicPlayPauseBtn = self.findChild(QPushButton, "musicPlayPauseBtn")
         self.musicVolumeSlider = self.findChild(QSlider, "musicVolumeSlider")
         self.musicTitleLabel = self.findChild(QLabel, "musicLabel")
         self.musicVolumeLabel = self.findChild(QLabel, "musicVolumeLabel")
-        
+
         self.musicVolumeLabel.setText(f"Volume: {self.musicVolumeSlider.value()}%")
-        
+
         self.reminder_input = self.findChild(QLineEdit, "reminderInput")
         self.reminder_list = self.findChild(QListWidget, "reminderList")
         self.add_reminder_button = self.findChild(QPushButton, "addReminderButton")
         self.reminder_time_edit = self.findChild(QTimeEdit, "reminderTimeEdit")
         self.reminder_time_edit.setDisplayFormat("HH:mm")
-        
+
         # Pomodoro Timer UI
-        self.pomodoro_timer = self.findChild(QLineEdit, "pomodoroTimer")
+        self.pomodoro_timer_label = self.findChild(QLabel, "pomodoroTimer")
         self.start_pomodoro_button = self.findChild(QPushButton, "startPomodoroButton")
         self.pause_pomodoro_button = self.findChild(QPushButton, "pausePomodoroButton")
         self.reset_pomodoro_button = self.findChild(QPushButton, "resetPomodoroButton")
-        
+
         # Connect Buttons
         self.add_task_button.clicked.connect(self.add_task)
         self.clear_checked_button.clicked.connect(self.clear_checked_tasks)
         self.add_reminder_button.clicked.connect(self.add_reminder)
-        self.start_pomodoro_button.clicked.connect(self.start_pomodoro)
-        self.pause_pomodoro_button.clicked.connect(self.pause_pomodoro)
+        self.start_pomodoro_button.clicked.connect(self.start_pause_pomodoro)
         self.reset_pomodoro_button.clicked.connect(self.reset_pomodoro)
         self.whitelistButton.clicked.connect(self.show_whitelist_dialog)
         self.musicBrowseBtn.clicked.connect(self.on_music_browse)
         self.musicPlayPauseBtn.clicked.connect(self.on_music_playpause)
         self.musicVolumeSlider.valueChanged.connect(self.on_music_volume_change)
-        
-        self.time_for_break= True
-        
 
         # Timers
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_time)
-        self.timer.start(1000)
-        
+        self.pomodoro_timer = QTimer(self)
+        self.pomodoro_timer.timeout.connect(self.update_pomodoro_display)
+        # self.pomodoro_timer.start(1000)
+
         self.reminder_timer = QTimer(self)
         self.reminder_timer.timeout.connect(self.check_reminders)
         self.reminder_timer.start(60000)
+
+        self.clock_timer = QTimer(self)
+        self.clock_timer.timeout.connect(self.update_clock)
+        self.clock_timer.start(1000)
 
         # System Tray Setup
         self.tray_icon = QSystemTrayIcon(QIcon("./assets/tomato.png"), self)
@@ -100,110 +110,111 @@ class MainWindow(QMainWindow):
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.activated.connect(self.tray_icon_clicked)
         self.tray_icon.show()
-        
+
         # Pomodoro Variables
-        self.pomodoro_time = 10 #DON"T FORGET TO CHANGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        self.break_time = 5 * 60
-        self.current_time = self.pomodoro_time
-        self.pomodoro_running = False
-        
+        self.pomo_work_time = 10  # DON"T FORGET TO CHANGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        self.pomo_break_time = 5 * 60
+        self.pomo_current_time = self.pomo_work_time
+        self.is_pomo_running = False
+        self.pomodoro_status = "Work"
+
         # Animation
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(500)
         self.animation.setEasingCurve(QEasingCurve.Type.InBounce)
-        
+
         # Scheduler for Pomodoro
         self.scheduler = BackgroundScheduler()
         self.scheduler.start()
-        
+
         self.reminders = []
-        self.update_time()
-        
-        #Sound effect
+
+        self.update_pomodoro_display()
+
+        # Sound effect
         self.audio_output = QAudioOutput()
         self.media_player = QMediaPlayer()
         self.media_player.setAudioOutput(self.audio_output)
-        self.media_player.setSource(QUrl.fromLocalFile("./assets/bells.wav"))  # Path to your sound file
+        self.media_player.setSource(
+            QUrl.fromLocalFile("./assets/bells.wav")
+        )  # Path to your sound file
         self.audio_output.setVolume(0.5)  # Adjust volume
         self.media_player.play()
 
     def show_whitelist_dialog(self):
         self.app.show_window("WhitelistDialog")
 
-    def start_pomodoro(self):
+    def start_pause_pomodoro(self):
         """Start the Pomodoro Timer and ensure display updates every second."""
-        if not self.pomodoro_running:
-            self.pomodoro_running = True
-            self.current_time = self.pomodoro_time
 
-            # Disconnect any previous connections to avoid multiple triggers
-            try:
-                self.timer.timeout.disconnect(self.update_pomodoro_display)
-            except TypeError:
-                pass  # Ignore if there was nothing to disconnect
-
-            self.timer.timeout.connect(self.update_pomodoro_display)
-            self.timer.start(1000)  # Update every second
-            self.update_pomodoro_display()  # Ensure UI updates immediately
-    
-    def pause_pomodoro(self):
-        self.pomodoro_running = False
-        self.timer.stop()
+        if self.is_pomo_running:
+            self.pomodoro_timer.stop()
+            self.is_pomo_running = False
+        else:
+            self.pomodoro_timer.start(1000)  # Update every second
+            self.is_pomo_running = True
 
     def reset_pomodoro(self):
         """Reset the Pomodoro Timer."""
-        self.pomodoro_running = False
-        self.timer.stop()
-        self.current_time = self.pomodoro_time
+        self.is_pomo_running = False
+        self.pomodoro_timer.stop()
+
+        self.pomodoro_status = "Work"
+        self.pomo_current_time = self.pomo_work_time
+
         self.update_pomodoro_display()
 
     def update_pomodoro_display(self):
         """Update the Pomodoro Timer Display every second."""
-        if self.pomodoro_running and self.current_time > 0:
-            minutes, seconds = divmod(self.current_time, 60)
-            self.pomodoro_timer.setText(f"{minutes:02}:{seconds:02}")
-            self.current_time -= 1  # Decrease time by 1 second
+
+        if self.pomo_current_time > 0:
+            minutes, seconds = divmod(self.pomo_current_time, 60)
+            self.pomodoro_timer_label.setText(
+                f"{self.pomodoro_status}: {minutes:02}:{seconds:02}"
+            )
+            self.pomo_current_time -= 1  # Decrease time by 1 second
         else:
-            self.timer.stop()  # Stop the timer when countdown reaches zero
-            if self.time_for_break:
+            if self.pomodoro_status == "Work":
                 self.show_pomodoro_notification_break()
+                self.pomo_current_time = self.pomo_break_time
+                self.pomodoro_status = "Rest"
             else:
                 self.show_pomodoro_notification_work()
-
-    def schedule_pomodoro_end(self, duration):
-        """Schedule an event when the Pomodoro session ends."""
-        current_datetime = datetime.now()  # Get current date & time
-        end_datetime = current_datetime + timedelta(seconds=duration)  # Add duration
-        self.scheduler.add_job(self.show_pomodoro_notification_break, "date", run_date=end_datetime)
+                self.pomo_current_time = self.pomo_work_time
+                self.pomodoro_status = "Work"
 
     def show_pomodoro_notification_break(self):
         """Notify user about break time and wait before restarting."""
-        QMessageBox.information(self, "Pomodoro Completed!", "⏳ Time's up! Take a break!")
-        self.current_time = self.break_time
-        self.pomodoro_running = False
-        self.time_for_break = False  # Next session will be work
+        QMessageBox.information(
+            self, "Pomodoro Completed!", "⏳ Time's up! Take a break!"
+        )
+        self.pomo_current_time = self.pomo_break_time
+        self.is_pomo_running = False
 
         # Wait before starting the break countdown
-        QTimer.singleShot(1000, self.start_pomodoro)
-        
+        QTimer.singleShot(1000, self.start_pause_pomodoro)
+
     def show_pomodoro_notification_work(self):
         """Notify user to get back to work and wait before restarting."""
         QMessageBox.information(self, "Break Over!", "⏳ Time to get back to work!")
-        self.current_time = self.pomodoro_time
-        self.pomodoro_running = False
-        self.time_for_break = True  # Next session will be break
+        self.pomo_current_time = self.pomo_work_time
+        self.is_pomo_running = False
 
         # Wait before starting the work countdown
-        QTimer.singleShot(1000, self.start_pomodoro)
+        QTimer.singleShot(1000, self.start_pause_pomodoro)
 
-    def update_time(self):
-        self.time_label.setText("Current time: " + QTime.currentTime().toString("HH:mm:ss"))
+    def update_clock(self):
+        self.time_label.setText(QTime.currentTime().toString("hh:mm:ss a"))
 
     def add_task(self):
         task = self.task_input.text().strip()
         if task:
             item = QListWidgetItem(task)
-            item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
+            item.setFlags(
+                item.flags()
+                | Qt.ItemFlag.ItemIsUserCheckable
+                | Qt.ItemFlag.ItemIsEnabled
+            )
             item.setCheckState(Qt.CheckState.Unchecked)
             self.task_list.addItem(item)
             self.task_input.clear()
@@ -235,7 +246,12 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         event.ignore()
         self.hide()
-        self.tray_icon.showMessage("To-Do List", "App minimized to tray", QSystemTrayIcon.MessageIcon.Information, 2000)
+        self.tray_icon.showMessage(
+            "To-Do List",
+            "App minimized to tray",
+            QSystemTrayIcon.MessageIcon.Information,
+            2000,
+        )
 
     def show_window(self):
         self.showNormal()
@@ -248,31 +264,18 @@ class MainWindow(QMainWindow):
     def tray_icon_clicked(self, reason):
         if reason == QSystemTrayIcon.ActivationReason.Trigger:
             self.show_window()
-            
+
     def move_to_bottom_right(self):
         """Move the window to the bottom-right corner of the screen."""
-        screen = QGuiApplication.primaryScreen().availableGeometry()  # Get available screen size
+        screen = (
+            QGuiApplication.primaryScreen().availableGeometry()
+        )  # Get available screen size
         window_size = self.frameGeometry()  # Get window size
 
         x = screen.right() - window_size.width()  # Adjust X position
         y = screen.bottom() - window_size.height()  # Adjust Y position
 
         self.move(x, y)  # Move window
-        
-
-
-    # Music controls
-    def on_music_browse(self):
-        self.app.show_window("RadioBrowserDialog")
-
-    def update_radio_station(self, radio_info):
-        self.musicTitleLabel.setText(radio_info["name"])
-        self.station_url = radio_info["url"]
-
-    def on_music_playpause(self):
-        if self.vlc_player.is_playing():
-            self.vlc_player.stop()
-            self.musicPlayPauseBtn.setText("▶️")
 
     # Music controls
     def on_music_browse(self):
