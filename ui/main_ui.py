@@ -40,15 +40,21 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.timeLabel = QLabel(self.statusGroup)
         self.timeLabel.setObjectName(u"timeLabel")
+        font = QFont()
+        font.setBold(True)
+        self.timeLabel.setFont(font)
+        self.timeLabel.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout.addWidget(self.timeLabel)
 
+        self.label_3 = QLabel(self.statusGroup)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout.addWidget(self.label_3)
+
 
         self.verticalLayout_5.addWidget(self.statusGroup)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_5.addItem(self.verticalSpacer_2)
 
         self.appsGroup = QGroupBox(self.leftGroup)
         self.appsGroup.setObjectName(u"appsGroup")
@@ -72,10 +78,6 @@ class Ui_MainWindow(object):
         self.label.setObjectName(u"label")
 
         self.verticalLayout_5.addWidget(self.label)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_5.addItem(self.verticalSpacer)
 
         self.label_5 = QLabel(self.leftGroup)
         self.label_5.setObjectName(u"label_5")
@@ -102,6 +104,10 @@ class Ui_MainWindow(object):
         self.resetPomodoroButton.setObjectName(u"resetPomodoroButton")
 
         self.verticalLayout_5.addWidget(self.resetPomodoroButton)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_5.addItem(self.verticalSpacer)
 
         self.musicGroup = QGroupBox(self.leftGroup)
         self.musicGroup.setObjectName(u"musicGroup")
@@ -159,30 +165,32 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.focusMode)
 
-        self.label_2 = QLabel(self.rightGroup)
-        self.label_2.setObjectName(u"label_2")
-
-        self.verticalLayout_4.addWidget(self.label_2)
-
-        self.reminderList = QListWidget(self.rightGroup)
-        self.reminderList.setObjectName(u"reminderList")
-
-        self.verticalLayout_4.addWidget(self.reminderList)
-
-        self.reminderInput = QLineEdit(self.rightGroup)
+        self.groupBox = QGroupBox(self.rightGroup)
+        self.groupBox.setObjectName(u"groupBox")
+        self.verticalLayout_3 = QVBoxLayout(self.groupBox)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.reminderInput = QLineEdit(self.groupBox)
         self.reminderInput.setObjectName(u"reminderInput")
 
-        self.verticalLayout_4.addWidget(self.reminderInput)
+        self.verticalLayout_3.addWidget(self.reminderInput)
 
-        self.reminderTimeEdit = QTimeEdit(self.rightGroup)
+        self.reminderTimeEdit = QTimeEdit(self.groupBox)
         self.reminderTimeEdit.setObjectName(u"reminderTimeEdit")
 
-        self.verticalLayout_4.addWidget(self.reminderTimeEdit)
+        self.verticalLayout_3.addWidget(self.reminderTimeEdit)
 
-        self.addReminderButton = QPushButton(self.rightGroup)
+        self.addReminderButton = QPushButton(self.groupBox)
         self.addReminderButton.setObjectName(u"addReminderButton")
 
-        self.verticalLayout_4.addWidget(self.addReminderButton)
+        self.verticalLayout_3.addWidget(self.addReminderButton)
+
+        self.reminderList = QListWidget(self.groupBox)
+        self.reminderList.setObjectName(u"reminderList")
+
+        self.verticalLayout_3.addWidget(self.reminderList)
+
+
+        self.verticalLayout_4.addWidget(self.groupBox)
 
         self.label_4 = QLabel(self.rightGroup)
         self.label_4.setObjectName(u"label_4")
@@ -230,7 +238,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.leftGroup.setTitle("")
         self.statusGroup.setTitle(QCoreApplication.translate("MainWindow", u"Status", None))
-        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"Time Display", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Focus Mode", None))
         self.appsGroup.setTitle(QCoreApplication.translate("MainWindow", u"App Whitelist", None))
         self.appWhitelistButton.setText(QCoreApplication.translate("MainWindow", u"Configure App Whitelist", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"App Usage", None))
@@ -246,8 +255,8 @@ class Ui_MainWindow(object):
         self.musicPlayPauseBtn.setText(QCoreApplication.translate("MainWindow", u"\u25b6\ufe0f", None))
         self.rightGroup.setTitle("")
         self.focusMode.setText(QCoreApplication.translate("MainWindow", u"Focus Mode", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Reminders", None))
-        self.addReminderButton.setText(QCoreApplication.translate("MainWindow", u"Add Reminder", None))
+        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Reminders", None))
+        self.addReminderButton.setText(QCoreApplication.translate("MainWindow", u"New", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"To-Do List", None))
         self.addTaskButton.setText(QCoreApplication.translate("MainWindow", u"Add Task", None))
         self.clearCheckedButton.setText(QCoreApplication.translate("MainWindow", u"Clear Checked Items", None))
