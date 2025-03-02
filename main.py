@@ -7,7 +7,7 @@ from windows.MainWindow import MainWindow
 from windows.RadioBrowserDialog import RadioBrowserDialog
 from windows.ReminderDialog import ReminderDialog
 from windows.WhitelistDialog import WhitelistDialog
-
+from windows.Graphics import GraphicsStatsWindow
 
 def load_stylesheet(qObject, filename):
     """Load an external QSS stylesheet and apply it."""
@@ -39,7 +39,7 @@ class App():
       "MainWindow": MainWindow(self),
       "WhitelistDialog": WhitelistDialog(self),
       "RadioBrowserDialog": RadioBrowserDialog(self),
-      "ReminderDialog": ReminderDialog(self),
+      "ReminderDialog": ReminderDialog(self)
     }
     for window in self.windows.values():
        load_stylesheet(window, "./assets/style.qss")
@@ -57,7 +57,13 @@ class App():
   def stop_task(self, task_name):
     self.appTasks[task_name].quit()
 
-  def show_window(self, window_name):
+  def show_window(self, window_name, details=None):
+    if details and len(details) <= 0: return
+    if window_name == "GraphicDisplay":
+      new_window = GraphicsStatsWindow(details)
+      new_window.exec()
+      new_window.show()
+      return
     self.windows[window_name].show()
 
   def get_window(self, window_name):
