@@ -16,7 +16,6 @@ from datetime import datetime, timedelta
 
 UI_FILE = "././ui/main.ui"
 
-
 class MainWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
@@ -36,7 +35,6 @@ class MainWindow(QMainWindow):
         # Resize and position window
         self.resize(800, 600)
         self.move_to_bottom_right()
-        self.load_stylesheet("./assets/style.qss")
 
         self.init_player()
         self.station_url = ""
@@ -261,13 +259,20 @@ class MainWindow(QMainWindow):
 
         self.move(x, y)  # Move window
         
-    def load_stylesheet(self, filename):
-        """Load an external QSS stylesheet and apply it."""
-        if os.path.exists(filename):
-            with open(filename, "r") as file:
-                self.setStyleSheet(file.read())
-        else:
-            print(f"Error: Stylesheet '{filename}' not found!")
+
+
+    # Music controls
+    def on_music_browse(self):
+        self.app.show_window("RadioBrowserDialog")
+
+    def update_radio_station(self, radio_info):
+        self.musicTitleLabel.setText(radio_info["name"])
+        self.station_url = radio_info["url"]
+
+    def on_music_playpause(self):
+        if self.vlc_player.is_playing():
+            self.vlc_player.stop()
+            self.musicPlayPauseBtn.setText("▶️")
 
     # Music controls
     def on_music_browse(self):

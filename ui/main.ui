@@ -29,26 +29,32 @@
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QLabel" name="timeLabel">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="text">
-             <string>TextLabel</string>
+             <string>Time Display</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Focus Mode</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item>
         <widget class="QGroupBox" name="appsGroup">
@@ -79,19 +85,6 @@
           <string>App Usage</string>
          </property>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item>
         <widget class="QLabel" name="label_5">
@@ -130,6 +123,19 @@
           <string>Reset Pomodoro</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <widget class="QGroupBox" name="musicGroup">
@@ -217,26 +223,28 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
           <string>Reminders</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListWidget" name="reminderList"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="reminderInput"/>
-       </item>
-       <item>
-        <widget class="QTimeEdit" name="reminderTimeEdit"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="addReminderButton">
-         <property name="text">
-          <string>Add Reminder</string>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLineEdit" name="reminderInput"/>
+          </item>
+          <item>
+           <widget class="QTimeEdit" name="reminderTimeEdit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="addReminderButton">
+            <property name="text">
+             <string>New</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="reminderList"/>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>

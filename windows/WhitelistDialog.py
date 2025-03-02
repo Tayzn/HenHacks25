@@ -36,6 +36,7 @@ class WhitelistDialog(QDialog):
         for window in pywin.getAllWindows():
             pid = window.getPID()
             name = psutil.Process(pid).name()
+            if pid == self.app.pid: continue
             if name in existing: continue
             existing.add(name)
 
