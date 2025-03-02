@@ -1,9 +1,11 @@
 import os
+
 from PyQt6.QtWidgets import QApplication
 
-from modules import polling, windowTracker, focusManager
+from modules import focusManager, polling, windowTracker
 from windows.MainWindow import MainWindow
 from windows.RadioBrowserDialog import RadioBrowserDialog
+from windows.ReminderDialog import ReminderDialog
 from windows.WhitelistDialog import WhitelistDialog
 
 
@@ -37,6 +39,7 @@ class App():
       "MainWindow": MainWindow(self),
       "WhitelistDialog": WhitelistDialog(self),
       "RadioBrowserDialog": RadioBrowserDialog(self),
+      "ReminderDialog": ReminderDialog(self),
     }
     for window in self.windows.values():
        load_stylesheet(window, "./assets/style.qss")

@@ -33,7 +33,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Time • Focus</string>
+          <string>...</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -151,7 +151,26 @@
             </property>
            </spacer>
           </item>
-          <item row="3" column="0">
+          <item row="4" column="0">
+           <widget class="QGroupBox" name="groupBox">
+            <property name="title">
+             <string>Reminders</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QPushButton" name="addReminderButton">
+               <property name="text">
+                <string>New</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="reminderList"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
              <string>Pomodoro</string>
@@ -211,31 +230,6 @@
          <property name="text">
           <string>Focus Mode</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Reminders</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QLineEdit" name="reminderInput"/>
-          </item>
-          <item>
-           <widget class="QTimeEdit" name="reminderTimeEdit"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="addReminderButton">
-            <property name="text">
-             <string>New</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QListWidget" name="reminderList"/>
-          </item>
-         </layout>
         </widget>
        </item>
        <item>
