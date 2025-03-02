@@ -67,6 +67,9 @@ class MainWindow(QMainWindow):
         self.pause_pomodoro_button = self.findChild(QPushButton, "pausePomodoroButton")
         self.reset_pomodoro_button = self.findChild(QPushButton, "resetPomodoroButton")
         
+        self.pomodoro_timer_instance = QTimer(self)
+        self.pomodoro_timer_instance.timeout.connect(self.update_pomodoro_display)
+        
         # Connect Buttons
         self.add_task_button.clicked.connect(self.add_task)
         self.clear_checked_button.clicked.connect(self.clear_checked_tasks)
@@ -134,28 +137,21 @@ class MainWindow(QMainWindow):
         """Start the Pomodoro Timer and ensure display updates every second."""
         if not self.pomodoro_running:
             self.pomodoro_running = True
-            self.current_time = self.pomodoro_time
-
-            # Disconnect any previous connections to avoid multiple triggers
-            try:
-                self.timer.timeout.disconnect(self.update_pomodoro_display)
-            except TypeError:
-                pass  # Ignore if there was nothing to disconnect
-
-            self.timer.timeout.connect(self.update_pomodoro_display)
-            self.timer.start(1000)  # Update every second
+            self.pomodoro_timer_instance.start(1000)  # Update every second
             self.update_pomodoro_display()  # Ensure UI updates immediately
-    
+
     def pause_pomodoro(self):
+        """Pause only the Pomodoro Timer without affecting the system clock."""
         self.pomodoro_running = False
-        self.timer.stop()
+        self.pomodoro_timer_instance.stop()  # Stop only the pomodoro timer
 
     def reset_pomodoro(self):
         """Reset the Pomodoro Timer."""
         self.pomodoro_running = False
-        self.timer.stop()
+        self.pomodoro_timer_instance.stop()
         self.current_time = self.pomodoro_time
         self.update_pomodoro_display()
+
 
     def update_pomodoro_display(self):
         """Update the Pomodoro Timer Display every second."""
