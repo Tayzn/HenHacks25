@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
         self.musicVolumeLabel = self.findChild(QLabel, "musicVolumeLabel")
         self.focusButton = self.findChild(QPushButton, "focusMode")
         self.leftGroup = self.findChild(QGroupBox, "leftGroup")
+        self.rightGroup = self.findChild(QGroupBox, "rightGroup")
 
         self.musicVolumeLabel.setText(f"Volume: {self.musicVolumeSlider.value()}%")
 
@@ -149,19 +150,25 @@ class MainWindow(QMainWindow):
             shadow2.setBlurRadius(20)
             shadow2.setColor(QColor(255, 255, 255, 180))  # White shadow
             shadow2.setOffset(0, 0)
+            
+            shadow3 = QGraphicsDropShadowEffect()
+            shadow3.setBlurRadius(20)
+            shadow3.setColor(QColor(255, 255, 255, 180))  # White shadow
+            shadow3.setOffset(0, 0)
         
             # Apply shadows
             self.time_label.setGraphicsEffect(shadow1)
             self.leftGroup.setGraphicsEffect(shadow2)
+            self.rightGroup.setGraphicsEffect(shadow3)
             self.focusMode = False
         else:
-            
-            #DOESN'T WoRK :(
             # Remove shadows
             print("Removing shadow")
             print("Removing shadow effect")  # Debugging
             self.time_label.setGraphicsEffect(None)
             self.leftGroup.setGraphicsEffect(None)
+            self.rightGroup.setGraphicsEffect(None)
+            self.focusMode = True
 
     
     def show_whitelist_dialog(self):
