@@ -164,7 +164,7 @@
              <item>
               <widget class="QPushButton" name="addReminderButton">
                <property name="text">
-                <string>New</string>
+                <string>New Reminder</string>
                </property>
               </widget>
              </item>
