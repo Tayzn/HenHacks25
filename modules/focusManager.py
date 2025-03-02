@@ -15,7 +15,7 @@ class FocusSession():
       print(self.appTimeline)
 
   def ping_app_timeline(self, appName):
-    self.appTimeline.append({appName, self.duration})
+    self.appTimeline.append({"appName": appName, "time": self.duration})
 
   def close(self):
     self.timer.stop()
