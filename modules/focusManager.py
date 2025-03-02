@@ -1,9 +1,10 @@
 from PyQt6.QtCore import QTimer
 
 class FocusSession():
-  def __init__(self):
+  def __init__(self, app):
     self.duration = 0
     self.appTimeline = []
+    self.app = app
 
     self.timer = QTimer()
     self.timer.timeout.connect(self.tick_timer)
@@ -11,6 +12,7 @@ class FocusSession():
 
   def tick_timer(self):
     self.duration += 1
+    self.app.get_window("MainWindow").focusButton.setText("In Focus Mode: " + str(self.duration) + " seconds")
     if self.duration % 3 == 0:
       print(self.appTimeline)
 
@@ -19,6 +21,7 @@ class FocusSession():
 
   def close(self):
     self.timer.stop()
+    self.app.get_window("MainWindow").focusButton.setText("Start Focus Mode")
 
 '''
   time spent on each non-focused app
@@ -36,7 +39,7 @@ class FocusManager():
     self.focusMode = not self.focusMode
     print('focus is:', self.focusMode)
     if self.focusMode:
-      self.currentSession = FocusSession()
+      self.currentSession = FocusSession(self.app)
     elif self.currentSession:
       self.currentSession.close()
 
