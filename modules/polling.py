@@ -1,12 +1,14 @@
 import time
 import psutil
 import pywinctl as pywin
-from PyQt6.QtCore import QThread
+from PyQt6.QtCore import QThread, pyqtSignal
 
 def get_name_from_pid(pid):
     return psutil.Process(pid).name()
 
 class PollingThread(QThread):
+    signal = pyqtSignal(int)
+
     def __init__(self, app, parent = None):
         super().__init__(parent)
         self.app = app
@@ -20,8 +22,8 @@ class PollingThread(QThread):
 
             if currentAppName != self.storedActiveWindowName:
                 self.storedActiveWindowName = currentAppName
-                self.app.get_app_task("WindowTracker").window_changed(currentAppName)
-
+                self.app.get_app_task("WindowTracker").window_changed(currentAppName, self.signal)
+                
             time.sleep(0.3)
 
     def get_active_window_name(self):

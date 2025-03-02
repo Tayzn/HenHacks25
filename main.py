@@ -21,6 +21,7 @@ class App():
 
   def start(self):
     app = QApplication([])
+    self.instance = app.instance()
     self.pid = app.applicationPid()
 
     self.appTasks = {
@@ -28,6 +29,7 @@ class App():
       "PollingThread": polling.PollingThread(self)
     }
     self.appTasks["PollingThread"].start()
+    self.appTasks["PollingThread"].signal.connect(self.display_alert)
 
     self.windows = {
       "MainWindow": MainWindow(self),
@@ -55,5 +57,8 @@ class App():
 
   def get_window(self, window_name):
     return self.windows[window_name]
+  
+  def display_alert(self):
+     self.get_window("MainWindow").show_unfocused_alert()
 
 App() # Entry

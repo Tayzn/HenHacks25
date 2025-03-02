@@ -1,38 +1,52 @@
 import psutil
-from PyQt6.QtCore import QThread
+from PyQt6.QtCore import QThread, pyqtSignal, QObject, QMetaObject, Qt
+from PyQt6.QtWidgets import QMessageBox
 
-MAX_ALLOWED_TIME = 10 # seconds allowed on a non-whitelisted app
+MAX_ALLOWED_TIME = 5 # seconds allowed on a non-whitelisted app
+
+class AppTimerWorker(QObject):
+  def run(self, task):
+    while task.running:
+      task.sleep(1)
+      task.timeout -= 1
+      if task.timeout == 0:
+        task.signal.emit(0)
+        break
 
 class AppTimerTask(QThread):
-  def __init__(self, parent = None):
+  def __init__(self, signal, parent = None):
     super().__init__(parent)
     self.timeout = MAX_ALLOWED_TIME
     self.running = True
+    self.worker = AppTimerWorker()
+    self.signal = signal
 
   def run(self):
-    while self.running:
-      self.sleep(1)
-      self.timeout -= 1
-      if self.timeout == 0:
-        print("You have spent too much time on an unwhitelisted app!")
-        break
+    self.worker.run(self)
 
-class WindowTracker():
+class WindowTracker(QObject):
   def __init__(self, app, whitelist=set()):
     self.app = app
     self.whitelistedApps = whitelist
     whitelist.add(psutil.Process(app.pid).name())
     self.currentTimeoutTask: AppTimerTask = None
 
-  def window_changed(self, appName):
+  def show_alert(self):
+    print('showing alert')
+    QMessageBox.warning(self.app.get_window("MainWindow"), "Get back on track!", "You've been using a non-whitelisted app for a while now...")
+
+  def window_changed(self, appName, signal):
     if self.currentTimeoutTask:
       self.currentTimeoutTask.running = False
+      self.currentTimeoutTask.wait()
       self.currentTimeoutTask = None
 
     if appName not in self.whitelistedApps:
-      self.currentTimeoutTask = AppTimerTask()
+      self.currentTimeoutTask = AppTimerTask(signal)
       self.currentTimeoutTask.start()
       print("Changed to non-whitelisted app!", appName)
+    else:
+      print("Changed to whitelisted app")
 
   def update_whitelist(self, whitelist):
     self.whitelistedApps = set(whitelist)
@@ -40,7 +54,7 @@ class WindowTracker():
     self.whitelistedApps.add(this_process)
 
     currentWindow = self.app.get_app_task("PollingThread").get_active_window_name()
-    self.window_changed(currentWindow)
+    self.window_changed(currentWindow, self.app.get_app_task("PollingThread").signal)
     
     mainWindowPreview = self.app.get_window("MainWindow").whitelistPreview
     mainWindowPreview.clear()
