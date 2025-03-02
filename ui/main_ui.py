@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QGroupBox, QHBox
     QLabel, QLineEdit, QListWidget, QListWidgetItem,
     QMainWindow, QMenuBar, QPushButton, QSizePolicy,
     QSlider, QSpacerItem, QStatusBar, QTimeEdit,
-    QVBoxLayout, QWidget)
+    QToolButton, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -28,172 +28,194 @@ class Ui_MainWindow(object):
         MainWindow.resize(1119, 710)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.horizontalLayout_10 = QHBoxLayout(self.centralwidget)
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.horizontalLayout_7 = QHBoxLayout()
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.horizontalLayout_8 = QHBoxLayout()
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.horizontalLayout_11 = QHBoxLayout()
-        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-
-        self.verticalLayout.addLayout(self.horizontalLayout_11)
-
-        self.groupBox_2 = QGroupBox(self.centralwidget)
-        self.groupBox_2.setObjectName(u"groupBox_2")
-        self.verticalLayout_5 = QVBoxLayout(self.groupBox_2)
+        self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.leftGroup = QGroupBox(self.centralwidget)
+        self.leftGroup.setObjectName(u"leftGroup")
+        self.verticalLayout_5 = QVBoxLayout(self.leftGroup)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.timeLabel = QLabel(self.groupBox_2)
+        self.statusGroup = QGroupBox(self.leftGroup)
+        self.statusGroup.setObjectName(u"statusGroup")
+        self.verticalLayout = QVBoxLayout(self.statusGroup)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.timeLabel = QLabel(self.statusGroup)
         self.timeLabel.setObjectName(u"timeLabel")
 
-        self.verticalLayout_5.addWidget(self.timeLabel)
+        self.verticalLayout.addWidget(self.timeLabel)
+
+
+        self.verticalLayout_5.addWidget(self.statusGroup)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_5.addItem(self.verticalSpacer_2)
 
-        self.label = QLabel(self.groupBox_2)
-        self.label.setObjectName(u"label")
-
-        self.verticalLayout_5.addWidget(self.label)
-
-        self.appWhitelistButton = QPushButton(self.groupBox_2)
+        self.appsGroup = QGroupBox(self.leftGroup)
+        self.appsGroup.setObjectName(u"appsGroup")
+        self.verticalLayout_2 = QVBoxLayout(self.appsGroup)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.appWhitelistButton = QPushButton(self.appsGroup)
         self.appWhitelistButton.setObjectName(u"appWhitelistButton")
 
-        self.verticalLayout_5.addWidget(self.appWhitelistButton)
+        self.verticalLayout_2.addWidget(self.appWhitelistButton)
 
-        self.mainWindowAppWhitelist = QListWidget(self.groupBox_2)
+        self.mainWindowAppWhitelist = QListWidget(self.appsGroup)
         self.mainWindowAppWhitelist.setObjectName(u"mainWindowAppWhitelist")
         self.mainWindowAppWhitelist.setSelectionMode(QAbstractItemView.NoSelection)
 
-        self.verticalLayout_5.addWidget(self.mainWindowAppWhitelist)
+        self.verticalLayout_2.addWidget(self.mainWindowAppWhitelist)
+
+
+        self.verticalLayout_5.addWidget(self.appsGroup)
+
+        self.label = QLabel(self.leftGroup)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout_5.addWidget(self.label)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_5.addItem(self.verticalSpacer)
 
-        self.label_5 = QLabel(self.groupBox_2)
+        self.label_5 = QLabel(self.leftGroup)
         self.label_5.setObjectName(u"label_5")
         self.label_5.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.verticalLayout_5.addWidget(self.label_5)
 
-        self.pomodoroTimer = QLineEdit(self.groupBox_2)
+        self.pomodoroTimer = QLineEdit(self.leftGroup)
         self.pomodoroTimer.setObjectName(u"pomodoroTimer")
 
         self.verticalLayout_5.addWidget(self.pomodoroTimer)
 
-        self.startPomodoroButton = QPushButton(self.groupBox_2)
+        self.startPomodoroButton = QPushButton(self.leftGroup)
         self.startPomodoroButton.setObjectName(u"startPomodoroButton")
 
         self.verticalLayout_5.addWidget(self.startPomodoroButton)
 
-        self.pausePomodoroButton = QPushButton(self.groupBox_2)
+        self.pausePomodoroButton = QPushButton(self.leftGroup)
         self.pausePomodoroButton.setObjectName(u"pausePomodoroButton")
 
         self.verticalLayout_5.addWidget(self.pausePomodoroButton)
 
-        self.resetPomodoroButton = QPushButton(self.groupBox_2)
+        self.resetPomodoroButton = QPushButton(self.leftGroup)
         self.resetPomodoroButton.setObjectName(u"resetPomodoroButton")
 
         self.verticalLayout_5.addWidget(self.resetPomodoroButton)
 
-        self.label_3 = QLabel(self.groupBox_2)
-        self.label_3.setObjectName(u"label_3")
+        self.musicGroup = QGroupBox(self.leftGroup)
+        self.musicGroup.setObjectName(u"musicGroup")
+        self.horizontalLayout_3 = QHBoxLayout(self.musicGroup)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.musicBrowseRadioBtn = QPushButton(self.musicGroup)
+        self.musicBrowseRadioBtn.setObjectName(u"musicBrowseRadioBtn")
 
-        self.verticalLayout_5.addWidget(self.label_3)
+        self.horizontalLayout_3.addWidget(self.musicBrowseRadioBtn)
 
-        self.volumeControl = QSlider(self.groupBox_2)
-        self.volumeControl.setObjectName(u"volumeControl")
-        self.volumeControl.setOrientation(Qt.Horizontal)
+        self.musicLabel = QLabel(self.musicGroup)
+        self.musicLabel.setObjectName(u"musicLabel")
 
-        self.verticalLayout_5.addWidget(self.volumeControl)
+        self.horizontalLayout_3.addWidget(self.musicLabel)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer)
+
+        self.musicVolumeLabel = QLabel(self.musicGroup)
+        self.musicVolumeLabel.setObjectName(u"musicVolumeLabel")
+
+        self.horizontalLayout_3.addWidget(self.musicVolumeLabel)
+
+        self.musicVolumeSlider = QSlider(self.musicGroup)
+        self.musicVolumeSlider.setObjectName(u"musicVolumeSlider")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.musicVolumeSlider.sizePolicy().hasHeightForWidth())
+        self.musicVolumeSlider.setSizePolicy(sizePolicy)
+        self.musicVolumeSlider.setMaximum(100)
+        self.musicVolumeSlider.setOrientation(Qt.Horizontal)
+        self.musicVolumeSlider.setTickPosition(QSlider.TicksBelow)
+
+        self.horizontalLayout_3.addWidget(self.musicVolumeSlider)
+
+        self.musicPlayPauseBtn = QToolButton(self.musicGroup)
+        self.musicPlayPauseBtn.setObjectName(u"musicPlayPauseBtn")
+
+        self.horizontalLayout_3.addWidget(self.musicPlayPauseBtn)
 
 
-        self.verticalLayout.addWidget(self.groupBox_2)
+        self.verticalLayout_5.addWidget(self.musicGroup)
 
 
-        self.horizontalLayout_8.addLayout(self.verticalLayout)
+        self.horizontalLayout_2.addWidget(self.leftGroup)
 
-
-        self.horizontalLayout_7.addLayout(self.horizontalLayout_8)
-
-        self.groupBox = QGroupBox(self.centralwidget)
-        self.groupBox.setObjectName(u"groupBox")
-        self.verticalLayout_4 = QVBoxLayout(self.groupBox)
+        self.rightGroup = QGroupBox(self.centralwidget)
+        self.rightGroup.setObjectName(u"rightGroup")
+        self.verticalLayout_4 = QVBoxLayout(self.rightGroup)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.focusMode = QPushButton(self.groupBox)
+        self.focusMode = QPushButton(self.rightGroup)
         self.focusMode.setObjectName(u"focusMode")
 
         self.verticalLayout_4.addWidget(self.focusMode)
 
-        self.label_2 = QLabel(self.groupBox)
+        self.label_2 = QLabel(self.rightGroup)
         self.label_2.setObjectName(u"label_2")
 
         self.verticalLayout_4.addWidget(self.label_2)
 
-        self.reminderList = QListWidget(self.groupBox)
+        self.reminderList = QListWidget(self.rightGroup)
         self.reminderList.setObjectName(u"reminderList")
 
         self.verticalLayout_4.addWidget(self.reminderList)
 
-        self.reminderInput = QLineEdit(self.groupBox)
+        self.reminderInput = QLineEdit(self.rightGroup)
         self.reminderInput.setObjectName(u"reminderInput")
 
         self.verticalLayout_4.addWidget(self.reminderInput)
 
-        self.reminderTimeEdit = QTimeEdit(self.groupBox)
+        self.reminderTimeEdit = QTimeEdit(self.rightGroup)
         self.reminderTimeEdit.setObjectName(u"reminderTimeEdit")
 
         self.verticalLayout_4.addWidget(self.reminderTimeEdit)
 
-        self.addReminderButton = QPushButton(self.groupBox)
+        self.addReminderButton = QPushButton(self.rightGroup)
         self.addReminderButton.setObjectName(u"addReminderButton")
 
         self.verticalLayout_4.addWidget(self.addReminderButton)
 
-        self.label_4 = QLabel(self.groupBox)
+        self.label_4 = QLabel(self.rightGroup)
         self.label_4.setObjectName(u"label_4")
 
         self.verticalLayout_4.addWidget(self.label_4)
 
-        self.taskList = QListWidget(self.groupBox)
+        self.taskList = QListWidget(self.rightGroup)
         self.taskList.setObjectName(u"taskList")
 
         self.verticalLayout_4.addWidget(self.taskList)
 
-        self.taskInput = QLineEdit(self.groupBox)
+        self.taskInput = QLineEdit(self.rightGroup)
         self.taskInput.setObjectName(u"taskInput")
 
         self.verticalLayout_4.addWidget(self.taskInput)
 
-        self.addTaskButton = QPushButton(self.groupBox)
+        self.addTaskButton = QPushButton(self.rightGroup)
         self.addTaskButton.setObjectName(u"addTaskButton")
 
         self.verticalLayout_4.addWidget(self.addTaskButton)
 
-        self.clearCheckedButton = QPushButton(self.groupBox)
+        self.clearCheckedButton = QPushButton(self.rightGroup)
         self.clearCheckedButton.setObjectName(u"clearCheckedButton")
 
         self.verticalLayout_4.addWidget(self.clearCheckedButton)
 
 
-        self.horizontalLayout_7.addWidget(self.groupBox)
-
-        self.horizontalLayout_12 = QHBoxLayout()
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-
-        self.horizontalLayout_7.addLayout(self.horizontalLayout_12)
-
-
-        self.horizontalLayout_10.addLayout(self.horizontalLayout_7)
+        self.horizontalLayout_2.addWidget(self.rightGroup)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1119, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1119, 26))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -206,17 +228,23 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.groupBox_2.setTitle("")
-        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"Timer (displays current time)", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"App Usage", None))
+        self.leftGroup.setTitle("")
+        self.statusGroup.setTitle(QCoreApplication.translate("MainWindow", u"Status", None))
+        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.appsGroup.setTitle(QCoreApplication.translate("MainWindow", u"App Whitelist", None))
         self.appWhitelistButton.setText(QCoreApplication.translate("MainWindow", u"Configure App Whitelist", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"App Usage", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Pomodoro Timer", None))
         self.pomodoroTimer.setText("")
         self.startPomodoroButton.setText(QCoreApplication.translate("MainWindow", u"Start Pomodoro", None))
         self.pausePomodoroButton.setText(QCoreApplication.translate("MainWindow", u"Pause Pomodoro", None))
         self.resetPomodoroButton.setText(QCoreApplication.translate("MainWindow", u"Reset Pomodoro", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Music Controls", None))
-        self.groupBox.setTitle("")
+        self.musicGroup.setTitle(QCoreApplication.translate("MainWindow", u"Music Controls", None))
+        self.musicBrowseRadioBtn.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
+        self.musicLabel.setText("")
+        self.musicVolumeLabel.setText(QCoreApplication.translate("MainWindow", u"Volume: 100%", None))
+        self.musicPlayPauseBtn.setText(QCoreApplication.translate("MainWindow", u"\u25b6\ufe0f", None))
+        self.rightGroup.setTitle("")
         self.focusMode.setText(QCoreApplication.translate("MainWindow", u"Focus Mode", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Reminders", None))
         self.addReminderButton.setText(QCoreApplication.translate("MainWindow", u"Add Reminder", None))

@@ -1,44 +1,49 @@
 from PyQt6.QtWidgets import QApplication
-from windows.MainWindow import MainWindow
-from windows.WhitelistDialog import WhitelistDialog
+
 from modules import polling, windowTracker
+from windows.MainWindow import MainWindow
+from windows.RadioBrowserDialog import RadioBrowserDialog
+from windows.WhitelistDialog import WhitelistDialog
 
-class App():
-  def __init__(self):
-    self.appTasks = {
-      "WindowTracker": windowTracker.WindowTracker(self),
-      "PollingThread": polling.PollingThread(self)
-    }
 
-    self.start()
+class App:
+    def __init__(self):
+        self.appTasks = {
+            "WindowTracker": windowTracker.WindowTracker(self),
+            "PollingThread": polling.PollingThread(self),
+        }
 
-  def start(self):
-    self.appTasks["PollingThread"].start()
+        self.start()
 
-    app = QApplication([])
-    
-    self.windows = {
-      "MainWindow": MainWindow(self),
-      "WhitelistDialog": WhitelistDialog(self)
-    }
+    def start(self):
+        self.appTasks["PollingThread"].start()
 
-    self.windows["MainWindow"].show()
+        app = QApplication([])
 
-    app.exec()
+        self.windows = {
+            "MainWindow": MainWindow(self),
+            "WhitelistDialog": WhitelistDialog(self),
+            "RadioBrowserDialog": RadioBrowserDialog(self),
+        }
 
-  def get_app_task(self, task_name):
-    return self.appTasks[task_name]
-  
-  def start_task(self, task_name):
-    self.appTasks[task_name].start()
+        self.windows["MainWindow"].show()
 
-  def stop_task(self, task_name):
-    self.appTasks[task_name].quit()
+        app.exec()
 
-  def show_window(self, window_name):
-    self.windows[window_name].show()
+    def get_app_task(self, task_name):
+        return self.appTasks[task_name]
 
-  def get_window(self, window_name):
-    return self.windows[window_name]
+    def start_task(self, task_name):
+        self.appTasks[task_name].start()
 
-App() # Entry
+    def stop_task(self, task_name):
+        self.appTasks[task_name].quit()
+
+    def show_window(self, window_name):
+        self.windows[window_name].show()
+
+    def get_window(self, window_name):
+        return self.windows[window_name]
+
+
+App()  # Entry
