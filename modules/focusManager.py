@@ -16,8 +16,8 @@ class FocusSession():
     if self.duration % 3 == 0:
       print(self.appTimeline)
 
-  def ping_app_timeline(self, appName):
-    self.appTimeline.append({"appName": appName, "time": self.duration})
+  def ping_app_timeline(self, appName, whitelisted):
+    self.appTimeline.append({"appName": appName, "time": self.duration, "whitelisted": whitelisted})
 
   def close(self):
     self.timer.stop()
@@ -43,9 +43,9 @@ class FocusManager():
     elif self.currentSession:
       self.currentSession.close()
 
-  def ping_app_time(self, appName):
+  def ping_app_time(self, appName, whitelisted):
     if not self.currentSession: return
-    self.currentSession.ping_app_timeline(appName)
+    self.currentSession.ping_app_timeline(appName, whitelisted)
 
   def is_focus_mode(self):
     return self.focusMode

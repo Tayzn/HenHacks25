@@ -43,11 +43,17 @@ class WindowTracker(QObject):
       self.currentTimeoutTask.wait()
       self.currentTimeoutTask = None
 
+    is_focused = self.app.get_app_task("FocusManager").is_focus_mode()
+    if not is_focused: return
+
+    if appName == "python.exe": return
+
     if appName not in self.whitelistedApps:
       self.currentTimeoutTask = AppTimerTask(signal, pingSignal, appName)
       self.currentTimeoutTask.start()
       print("Changed to non-whitelisted app!", appName)
     else:
+      self.app.get_app_task("FocusManager").ping_app_time(appName, True)
       print("Changed to whitelisted app")
 
   def update_whitelist(self, whitelist):

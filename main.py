@@ -33,7 +33,7 @@ class App():
     }
     self.appTasks["PollingThread"].start()
     self.appTasks["PollingThread"].signal.connect(self.display_alert)
-    self.appTasks["PollingThread"].ping_signal.connect(self.appTasks["FocusManager"].ping_app_time)
+    self.appTasks["PollingThread"].ping_signal.connect(lambda appName: self.appTasks["FocusManager"].ping_app_time(appName, False))
 
     self.windows = {
       "MainWindow": MainWindow(self),
