@@ -14,6 +14,14 @@ from datetime import datetime, timedelta
 
 UI_FILE = "././ui/main.ui"
 
+def load_stylesheet(qObject, filename):
+    """Load an external QSS stylesheet and apply it."""
+    if os.path.exists(filename):
+        with open(filename, "r") as file:
+            qObject.setStyleSheet(file.read())
+    else:
+        print(f"Error: Stylesheet '{filename}' not found!")
+
 class MainWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
@@ -33,7 +41,7 @@ class MainWindow(QMainWindow):
         # Resize and position window
         self.resize(800, 600)
         self.move_to_bottom_right()
-        self.load_stylesheet("./assets/style.qss")
+        load_stylesheet(self, "./assets/style.qss")
 
         # UI Elements
         self.time_label = self.findChild(QLabel, "timeLabel")
@@ -245,12 +253,6 @@ class MainWindow(QMainWindow):
 
         self.move(x, y)  # Move window
         
-    def load_stylesheet(self, filename):
-        """Load an external QSS stylesheet and apply it."""
-        if os.path.exists(filename):
-            with open(filename, "r") as file:
-                self.setStyleSheet(file.read())
-        else:
-            print(f"Error: Stylesheet '{filename}' not found!")
+
 
 
