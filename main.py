@@ -17,54 +17,53 @@ def load_stylesheet(qObject, filename):
     else:
         print(f"Error: Stylesheet '{filename}' not found!")
 
+class App():
+  def __init__(self):
+    self.start()
 
-class App:
-    def __init__(self):
-        self.start()
+  def start(self):
+    app = QApplication([])
+    self.instance = app.instance()
+    self.pid = app.applicationPid()
 
-    def start(self):
-        app = QApplication([])
-        self.instance = app.instance()
-        self.pid = app.applicationPid()
+    self.appTasks = {
+      "WindowTracker": windowTracker.WindowTracker(self),
+      "PollingThread": polling.PollingThread(self),
+      "FocusManager": focusManager.FocusManager(self)
+    }
+    self.appTasks["PollingThread"].start()
+    self.appTasks["PollingThread"].signal.connect(self.display_alert)
+    self.appTasks["PollingThread"].ping_signal.connect(self.appTasks["FocusManager"].ping_app_time)
 
-        self.appTasks = {
-            "WindowTracker": windowTracker.WindowTracker(self),
-            "PollingThread": polling.PollingThread(self),
-            "FocusManager": focusManager.FocusManager(self),
-        }
-        self.appTasks["PollingThread"].start()
-        self.appTasks["PollingThread"].signal.connect(self.display_alert)
+    self.windows = {
+      "MainWindow": MainWindow(self),
+      "WhitelistDialog": WhitelistDialog(self),
+      "RadioBrowserDialog": RadioBrowserDialog(self),
+      "ReminderDialog": ReminderDialog(self),
+    }
+    for window in self.windows.values():
+       load_stylesheet(window, "./assets/style.qss")
 
-        self.windows = {
-            "MainWindow": MainWindow(self),
-            "WhitelistDialog": WhitelistDialog(self),
-            "RadioBrowserDialog": RadioBrowserDialog(self),
-            "ReminderDialog": ReminderDialog(self),
-        }
-        for window in self.windows.values():
-            load_stylesheet(window, "./assets/style.qss")
+    self.windows["MainWindow"].show()
 
-        self.windows["MainWindow"].show()
+    app.exec()
 
-        app.exec()
+  def get_app_task(self, task_name):
+    return self.appTasks[task_name]
+  
+  def start_task(self, task_name):
+    self.appTasks[task_name].start()
 
-    def get_app_task(self, task_name):
-        return self.appTasks[task_name]
+  def stop_task(self, task_name):
+    self.appTasks[task_name].quit()
 
-    def start_task(self, task_name):
-        self.appTasks[task_name].start()
+  def show_window(self, window_name):
+    self.windows[window_name].show()
 
-    def stop_task(self, task_name):
-        self.appTasks[task_name].quit()
+  def get_window(self, window_name):
+    return self.windows[window_name]
+  
+  def display_alert(self):
+     self.get_window("MainWindow").show_unfocused_alert()
 
-    def show_window(self, window_name):
-        self.windows[window_name].show()
-
-    def get_window(self, window_name):
-        return self.windows[window_name]
-
-    def display_alert(self):
-        self.get_window("MainWindow").show_unfocused_alert()
-
-
-App()  # Entry
+App() # Entry

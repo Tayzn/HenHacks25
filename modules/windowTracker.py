@@ -9,17 +9,23 @@ class AppTimerWorker(QObject):
     while task.running:
       task.sleep(1)
       task.timeout -= 1
+
+      if task.timeout == 3:
+        task.pingSignal.emit(task.appName)
+
       if task.timeout == 0:
         task.signal.emit(0)
         break
 
 class AppTimerTask(QThread):
-  def __init__(self, signal, parent = None):
+  def __init__(self, signal, pingSignal, appName, parent = None):
     super().__init__(parent)
     self.timeout = MAX_ALLOWED_TIME
     self.running = True
     self.worker = AppTimerWorker()
     self.signal = signal
+    self.pingSignal = pingSignal
+    self.appName = appName
 
   def run(self):
     self.worker.run(self)
@@ -31,18 +37,14 @@ class WindowTracker(QObject):
     whitelist.add(psutil.Process(app.pid).name())
     self.currentTimeoutTask: AppTimerTask = None
 
-  def show_alert(self):
-    print('showing alert')
-    QMessageBox.warning(self.app.get_window("MainWindow"), "Get back on track!", "You've been using a non-whitelisted app for a while now...")
-
-  def window_changed(self, appName, signal):
+  def window_changed(self, appName, signal, pingSignal):
     if self.currentTimeoutTask:
       self.currentTimeoutTask.running = False
       self.currentTimeoutTask.wait()
       self.currentTimeoutTask = None
 
     if appName not in self.whitelistedApps:
-      self.currentTimeoutTask = AppTimerTask(signal)
+      self.currentTimeoutTask = AppTimerTask(signal, pingSignal, appName)
       self.currentTimeoutTask.start()
       print("Changed to non-whitelisted app!", appName)
     else:
