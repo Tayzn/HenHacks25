@@ -1,6 +1,6 @@
 import psutil
-from PyQt6.QtCore import QThread, pyqtSignal, QObject, QMetaObject, Qt
-from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtCore import QThread, QObject, QFileInfo
+from PyQt6.QtWidgets import QMessageBox, QFileIconProvider, QListWidgetItem
 
 MAX_ALLOWED_TIME = 5 # seconds allowed on a non-whitelisted app
 
@@ -58,9 +58,17 @@ class WindowTracker(QObject):
     
     mainWindowPreview = self.app.get_window("MainWindow").whitelistPreview
     mainWindowPreview.clear()
-    for whitelisted in whitelist:
-      if whitelisted == this_process: continue
-      mainWindowPreview.addItem(whitelisted)
+
+    provider = QFileIconProvider()
+    existing = set()
+
+    for proc in psutil.process_iter():
+      name = proc.name()
+      if name in existing: continue
+      existing.add(name)
+      if name in self.whitelistedApps and name != this_process:
+        new_item = QListWidgetItem(provider.icon(QFileInfo(proc.exe())), name)
+        mainWindowPreview.addItem(new_item)
     
 
 

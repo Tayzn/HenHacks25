@@ -1,6 +1,6 @@
 from PyQt6 import uic
-from PyQt6.QtWidgets import QDialog, QPushButton, QTextEdit, QListWidget, QListWidgetItem
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QDialog, QPushButton, QListWidget, QListWidgetItem, QFileIconProvider
+from PyQt6.QtCore import Qt, QFileInfo
 import pywinctl as pywin
 import psutil
 
@@ -31,11 +31,13 @@ class WhitelistDialog(QDialog):
         return super().showEvent(a0)
 
     def load_apps(self):
+        provider = QFileIconProvider()
         self.listWidget.clear()
         existing = set()
         for window in pywin.getAllWindows():
             pid = window.getPID()
-            name = psutil.Process(pid).name()
+            process = psutil.Process(pid)
+            name = process.name()
             if pid == self.app.pid: continue
             if name in existing: continue
             existing.add(name)
@@ -44,7 +46,7 @@ class WhitelistDialog(QDialog):
             if window.title:
                 display = f"{name} - {window.title}"
 
-            new_item = QListWidgetItem(display)
+            new_item = QListWidgetItem(provider.icon(QFileInfo(process.exe())), display)
             new_item.setCheckState(Qt.CheckState.Unchecked)
 
             self.listWidget.addItem(new_item)
@@ -60,6 +62,3 @@ class WhitelistDialog(QDialog):
                 checked_apps.append(text)
         self.app.get_app_task("WindowTracker").update_whitelist(checked_apps)
         self.hide()
-
-    def text_changed(self):
-        print(self.textWindow.toPlainText())

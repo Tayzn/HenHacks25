@@ -7,22 +7,23 @@ QMainWindow {
 
 /* Labels */
 QLabel {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #88C0D0;
+    padding: 0px;
 }
  /* Group Boxes */
 QGroupBox {
     border: 2px solid #88C0D0;
     border-radius: 8px;
-    padding: 5px; /* Space inside the box */
-    margin-top: 20px; /* Leaves space for the title */
+    padding: 0px; /* Space inside the box */
+    margin-top: 5px; /* Leaves space for the title */
 }
 
 QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top left; /* Adjust the title position */
-    padding: 3px 3px;
+    /* padding: 3px 3px; */
     color: transparent;
     font-weight: bold;
     font-family: "Arial";
@@ -37,7 +38,7 @@ QGroupBox::title {
 #timeLabel {
     color: #88C0D0;
     font-size: 32px;
-    padding: 3px;
+    padding: 0px;
     border: 2px solid #88C0D0;
     border-radius: 4px;
 }
@@ -47,7 +48,7 @@ QGroupBox::title {
 QPushButton {
     background-color: #5E81AC;
     color: white;
-    font-size: 16px;
+    font-size: 12px;
     border-radius: 5px;
     padding: 4px;
 }
@@ -60,7 +61,7 @@ QPushButton:hover {
 QLineEdit {
     background-color: #3B4252;
     border: 2px solid #88C0D0;
-    padding: 3px;
+    padding: 0px;
     font-size: 14px;
     border-radius: 3px;
 }
@@ -69,11 +70,11 @@ QLineEdit {
 QListWidget {
     background-color: #4C566A;
     border-radius: 3px;
-    padding: 3px;
+    padding: 0px;
 }
 
 QListWidget::item {
-    padding: 5px;
+    padding: 0px;
     font-size: 14px;
     color: #ECEFF4;
 }
