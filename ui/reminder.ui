@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>New Reminder</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../assets/tomato.png</normaloff>../assets/tomato.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

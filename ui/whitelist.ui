@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>App Whitelist</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../assets/tomato.png</normaloff>../assets/tomato.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QListWidget" name="appWhitelistList"/>

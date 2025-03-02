@@ -38,6 +38,7 @@ class RadioBrowserDialog(QDialog):
 
     def search(self):
         # print("SEARCH", self.text_input.text())
+        self.tree_widget.clear()
         self.stations = self.rb.search(name=self.text_input.text())
 
         for station in self.stations:
