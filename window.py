@@ -9,24 +9,20 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices
 from PyQt6.QtCore import QUrl
 from PyQt6.QtGui import QGuiApplication, QAction, QIcon
-from PyQt6.QtCore import QTimer, QTime, Qt, QPropertyAnimation, QEasingCurve
+from PyQt6.QtCore import QTimer, QTime, Qt, QPropertyAnimation, QEasingCurve, QCoreApplication
 from datetime import datetime, timedelta
 
+from PyQt6.QtMultimedia import QSoundEffect
+import pyaudio
+import wave
+    
+    
+    
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        
-        # Testing audio
         uic.loadUi("test.ui", self)
-
-        audio_outputs = QMediaDevices.audioOutputs()
-        if not audio_outputs:
-            print("No audio output devices detected!")
-        else:
-            print("Available audio devices:")
-            for device in audio_outputs:
-                print(device.description())
 
 
         # Resize and position window
@@ -100,16 +96,22 @@ class MyWindow(QMainWindow):
         
         self.reminders = []
         self.update_time()
-        
-        #Sound effect
-        self.audio_output = QAudioOutput()
-        self.media_player = QMediaPlayer()
-        self.media_player.setAudioOutput(self.audio_output)
-        self.media_player.setSource(QUrl.fromLocalFile("mixkit-happy-bells-notification-937.wav"))  # Path to your sound file
-        self.audio_output.setVolume(0.5)  # Adjust volume
-        self.media_player.play()
 
 
+    def play_notif_sound(self):
+        sound = QSoundEffect()
+        sound.setSource(QUrl.fromLocalFile("output.wav"))
+
+        # Explicitly set an audio output device
+        devices = QMediaDevices.audioOutputs()
+        if devices:
+            sound.setAudioOutput(devices[0])  # Use the first available device
+    
+        sound.setLoopCount(1)  # Play once
+        sound.setVolume(1.0)   # Full volume
+        sound.play()
+
+    
     def start_pomodoro(self):
         """Start the Pomodoro Timer and ensure display updates every second."""
         if not self.pomodoro_running:
@@ -159,6 +161,7 @@ class MyWindow(QMainWindow):
     def show_pomodoro_notification_break(self):
         """Notify user about break time and wait before restarting."""
         QMessageBox.information(self, "Pomodoro Completed!", "⏳ Time's up! Take a break!")
+        self.play_notif_sound()
         self.current_time = self.break_time
         self.pomodoro_running = False
         self.time_for_break = False  # Next session will be work
@@ -169,6 +172,7 @@ class MyWindow(QMainWindow):
     def show_pomodoro_notification_work(self):
         """Notify user to get back to work and wait before restarting."""
         QMessageBox.information(self, "Break Over!", "⏳ Time to get back to work!")
+        self.play_notif_sound()
         self.current_time = self.pomodoro_time
         self.pomodoro_running = False
         self.time_for_break = True  # Next session will be break
@@ -205,6 +209,7 @@ class MyWindow(QMainWindow):
 
     def show_reminder_dialog(self, message):
         QMessageBox.information(self, "Reminder Alert", f"Reminder: {message}")
+        self.play_notif_sound()
 
     def clear_checked_tasks(self):
         for i in range(self.task_list.count() - 1, -1, -1):
@@ -246,6 +251,8 @@ class MyWindow(QMainWindow):
                 self.setStyleSheet(file.read())
         else:
             print(f"Error: Stylesheet '{filename}' not found!")
+            
+
 
 app = QApplication(sys.argv)
 app.setQuitOnLastWindowClosed(False)
