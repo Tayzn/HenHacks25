@@ -199,7 +199,7 @@
              <item>
               <widget class="QPushButton" name="startPomodoroButton">
                <property name="text">
-                <string>Start/Pause</string>
+                <string>Start</string>
                </property>
               </widget>
              </item>

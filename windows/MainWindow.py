@@ -1,7 +1,7 @@
 import vlc
 from PyQt6 import uic
 from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QTime, QTimer, QUrl
-from PyQt6.QtGui import QAction, QGuiApplication, QIcon
+from PyQt6.QtGui import QAction, QGuiApplication, QIcon, QShortcut
 from PyQt6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
 from PyQt6.QtWidgets import (
     QApplication,
@@ -64,15 +64,16 @@ class MainWindow(QMainWindow):
 
         # Pomodoro Timer UI
         self.pomodoro_timer_label = self.findChild(QLabel, "pomodoroTimer")
-        self.start_pomodoro_button = self.findChild(QPushButton, "startPomodoroButton")
-        self.pause_pomodoro_button = self.findChild(QPushButton, "pausePomodoroButton")
+        self.start_pause_pomodoro_button = self.findChild(
+            QPushButton, "startPomodoroButton"
+        )
         self.reset_pomodoro_button = self.findChild(QPushButton, "resetPomodoroButton")
 
         # Connect Buttons
         self.add_task_button.clicked.connect(self.add_task)
         self.clear_checked_button.clicked.connect(self.clear_checked_tasks)
         self.add_reminder_button.clicked.connect(self.new_reminder_dialog)
-        self.start_pomodoro_button.clicked.connect(self.start_pause_pomodoro)
+        self.start_pause_pomodoro_button.clicked.connect(self.start_pause_pomodoro)
         self.reset_pomodoro_button.clicked.connect(self.reset_pomodoro)
         self.whitelistButton.clicked.connect(self.show_whitelist_dialog)
         self.musicBrowseBtn.clicked.connect(self.on_music_browse)
@@ -124,6 +125,10 @@ class MainWindow(QMainWindow):
         self.audio_output.setVolume(0.5)  # Adjust volume
         self.media_player.play()
 
+        # Create a shortcut to open the window
+        self.open_window_shortcut = QShortcut(Qt.Key.Key_F1, self)  # F1 keybind
+        self.open_window_shortcut.activated.connect(self.show_window)
+
     def show_whitelist_dialog(self):
         self.app.show_window("WhitelistDialog")
 
@@ -133,9 +138,12 @@ class MainWindow(QMainWindow):
         if self.is_pomo_running:
             self.pomodoro_timer.stop()
             self.is_pomo_running = False
+            self.start_pause_pomodoro_button.setText("Start")
+
         else:
             self.pomodoro_timer.start(1000)  # Update every second
             self.is_pomo_running = True
+            self.start_pause_pomodoro_button.setText("Pause")
 
     def reset_pomodoro(self):
         """Reset the Pomodoro Timer."""
@@ -144,6 +152,7 @@ class MainWindow(QMainWindow):
 
         self.pomodoro_status = "Work"
         self.pomo_current_time = self.pomo_work_time
+        self.start_pause_pomodoro_button.setText("Start")
 
         self.update_pomodoro_display()
 
@@ -248,6 +257,7 @@ class MainWindow(QMainWindow):
         )
 
     def show_window(self):
+        print("SHWO")
         self.showNormal()
         self.activateWindow()
 
