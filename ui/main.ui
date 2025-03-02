@@ -33,17 +33,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Time Display</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Focus Mode</string>
+          <string>Time • Focus</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -56,13 +46,6 @@
           <string/>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="3" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>App Usage</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="0">
            <widget class="QGroupBox" name="appsGroup">
             <property name="title">
@@ -86,7 +69,7 @@
             </layout>
            </widget>
           </item>
-          <item row="10" column="0">
+          <item row="9" column="0">
            <widget class="QGroupBox" name="musicGroup">
             <property name="title">
              <string>Music Controls</string>
@@ -155,7 +138,7 @@
             </layout>
            </widget>
           </item>
-          <item row="9" column="0">
+          <item row="8" column="0">
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -168,7 +151,7 @@
             </property>
            </spacer>
           </item>
-          <item row="4" column="0">
+          <item row="3" column="0">
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
              <string>Pomodoro</string>
@@ -231,26 +214,28 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
           <string>Reminders</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListWidget" name="reminderList"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="reminderInput"/>
-       </item>
-       <item>
-        <widget class="QTimeEdit" name="reminderTimeEdit"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="addReminderButton">
-         <property name="text">
-          <string>Add Reminder</string>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLineEdit" name="reminderInput"/>
+          </item>
+          <item>
+           <widget class="QTimeEdit" name="reminderTimeEdit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="addReminderButton">
+            <property name="text">
+             <string>New</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="reminderList"/>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
