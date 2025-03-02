@@ -1,8 +1,11 @@
 import os
 from PyQt6.QtWidgets import QApplication
-from windows.MainWindow import MainWindow
-from windows.WhitelistDialog import WhitelistDialog
+
 from modules import polling, windowTracker
+from windows.MainWindow import MainWindow
+from windows.RadioBrowserDialog import RadioBrowserDialog
+from windows.WhitelistDialog import WhitelistDialog
+
 
 def load_stylesheet(qObject, filename):
     """Load an external QSS stylesheet and apply it."""
@@ -25,10 +28,11 @@ class App():
     self.appTasks["PollingThread"].start()
 
     app = QApplication([])
-    
+
     self.windows = {
       "MainWindow": MainWindow(self),
-      "WhitelistDialog": WhitelistDialog(self)
+      "WhitelistDialog": WhitelistDialog(self),
+      "RadioBrowserDialog": RadioBrowserDialog(self),
     }
 
     for window in self.windows.values():

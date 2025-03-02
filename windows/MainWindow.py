@@ -1,10 +1,12 @@
+import vlc
 import os
 import sys
 from apscheduler.schedulers.background import BackgroundScheduler
 from PyQt6 import uic
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QPushButton, QLabel, QListWidget, QLineEdit, 
-    QListWidgetItem, QSystemTrayIcon, QMenu, QTimeEdit, QMessageBox, QGroupBox
+    QListWidgetItem, QSystemTrayIcon, QMenu, QTimeEdit, QMessageBox, QGroupBox,
+    QSlider, QToolButton
 )
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices
 from PyQt6.QtCore import QUrl
@@ -13,14 +15,6 @@ from PyQt6.QtCore import QTimer, QTime, Qt, QPropertyAnimation, QEasingCurve
 from datetime import datetime, timedelta
 
 UI_FILE = "././ui/main.ui"
-
-def load_stylesheet(qObject, filename):
-    """Load an external QSS stylesheet and apply it."""
-    if os.path.exists(filename):
-        with open(filename, "r") as file:
-            qObject.setStyleSheet(file.read())
-    else:
-        print(f"Error: Stylesheet '{filename}' not found!")
 
 class MainWindow(QMainWindow):
     def __init__(self, app):
@@ -41,7 +35,9 @@ class MainWindow(QMainWindow):
         # Resize and position window
         self.resize(800, 600)
         self.move_to_bottom_right()
-        load_stylesheet(self, "./assets/style.qss")
+
+        self.init_player()
+        self.station_url = ""
 
         # UI Elements
         self.time_label = self.findChild(QLabel, "timeLabel")
@@ -51,6 +47,13 @@ class MainWindow(QMainWindow):
         self.clear_checked_button = self.findChild(QPushButton, "clearCheckedButton")
         self.whitelistButton = self.findChild(QPushButton, "appWhitelistButton")
         self.whitelistPreview = self.findChild(QListWidget, "mainWindowAppWhitelist")
+        self.musicBrowseBtn = self.findChild(QPushButton, "musicBrowseRadioBtn")
+        self.musicPlayPauseBtn = self.findChild(QToolButton, "musicPlayPauseBtn")
+        self.musicVolumeSlider = self.findChild(QSlider, "musicVolumeSlider")
+        self.musicTitleLabel = self.findChild(QLabel, "musicLabel")
+        self.musicVolumeLabel = self.findChild(QLabel, "musicVolumeLabel")
+        
+        self.musicVolumeLabel.setText(f"Volume: {self.musicVolumeSlider.value()}%")
         
         self.reminder_input = self.findChild(QLineEdit, "reminderInput")
         self.reminder_list = self.findChild(QListWidget, "reminderList")
@@ -72,6 +75,9 @@ class MainWindow(QMainWindow):
         self.pause_pomodoro_button.clicked.connect(self.pause_pomodoro)
         self.reset_pomodoro_button.clicked.connect(self.reset_pomodoro)
         self.whitelistButton.clicked.connect(self.show_whitelist_dialog)
+        self.musicBrowseBtn.clicked.connect(self.on_music_browse)
+        self.musicPlayPauseBtn.clicked.connect(self.on_music_playpause)
+        self.musicVolumeSlider.valueChanged.connect(self.on_music_volume_change)
         
         self.time_for_break= True
         
@@ -255,4 +261,58 @@ class MainWindow(QMainWindow):
         
 
 
+    # Music controls
+    def on_music_browse(self):
+        self.app.show_window("RadioBrowserDialog")
 
+    def update_radio_station(self, radio_info):
+        self.musicTitleLabel.setText(radio_info["name"])
+        self.station_url = radio_info["url"]
+
+    def on_music_playpause(self):
+        if self.vlc_player.is_playing():
+            self.vlc_player.stop()
+            self.musicPlayPauseBtn.setText("▶️")
+
+    # Music controls
+    def on_music_browse(self):
+        self.app.show_window("RadioBrowserDialog")
+
+    def update_radio_station(self, radio_info):
+        self.musicTitleLabel.setText(radio_info["name"])
+        self.station_url = radio_info["url"]
+
+    def on_music_playpause(self):
+        if self.vlc_player.is_playing():
+            self.vlc_player.stop()
+            self.musicPlayPauseBtn.setText("▶️")
+        else:
+            self.play_track(self.station_url)
+            self.musicPlayPauseBtn.setText("⏹️")
+
+    def on_music_volume_change(self, level):
+        self.musicVolumeLabel.setText(f"Volume: {level}%")
+        self.vlc_player.audio_set_volume(level)
+
+    def init_player(self):
+        self.vlc_instance = vlc.Instance(
+            "--no-xlib"
+        )  # Ensure no X server dependency on Linux
+        self.vlc_player = self.vlc_instance.media_player_new()
+
+        # Set VLC player volume
+        self.vlc_player.audio_set_volume(self.musicVolumeSlider.value())
+
+    def play_track(self, url):
+        if not url:
+            return
+
+        url = url.strip()
+
+        media = self.vlc_instance.media_new(url)
+        self.vlc_player.set_media(media)
+
+        if self.vlc_player.play() == -1:
+            print("Unable to play")
+        else:
+            print("Playing media")
