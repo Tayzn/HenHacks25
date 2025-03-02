@@ -20,6 +20,14 @@ class WhitelistDialog(QDialog):
 
     def showEvent(self, a0):
         self.load_apps()
+        current_whitelist = self.app.get_app_task("WindowTracker").whitelistedApps
+        for idx in range(self.listWidget.count()):
+            item = self.listWidget.item(idx)
+            text = item.text()
+            text = text.split(" - ")[0]
+            if text in current_whitelist:
+                item.setCheckState(Qt.CheckState.Checked)
+
         return super().showEvent(a0)
 
     def load_apps(self):
@@ -50,6 +58,7 @@ class WhitelistDialog(QDialog):
                 text = text.split(" - ")[0]
                 checked_apps.append(text)
         self.app.get_app_task("WindowTracker").update_whitelist(checked_apps)
+        self.hide()
 
     def text_changed(self):
         print(self.textWindow.toPlainText())
