@@ -1,14 +1,12 @@
-import sys
 from collections import defaultdict
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QVBoxLayout, QWidget, QMainWindow, QDialog
 
 WHITELIST_COLOR = "#ffffff"
 OTHER_COLOR = "#0000000"
-
 
 class BarGraph(QWidget):
     def __init__(self, data, parent=None):
@@ -166,19 +164,20 @@ class TimelineGraph(QWidget):
         )  # Adding some extra space at the end for visualization
 
 
-class GraphicsStatsWindow(QMainWindow):
-    def __init__(self, data, parent=None):
-        super().__init__(parent)
+class GraphicsStatsWindow(QDialog):
+    def __init__(self, data=[{
+        'appName': 'Code.exe', 'time': 3, 'whitelisted': False
+    }]):
+        super().__init__()
 
         self.setWindowTitle("Focus Mode Summary")
-        self.setStatusBar(None)
 
         # Initialize a QWidget to host the layouts
-        widget = QWidget(self)
-        self.setCentralWidget(widget)
+        #widget = QWidget(self)
+        #self.setCentralWidget(widget)
 
         # Create a QVBoxLayout to stack all the graphs vertically
-        layout = QVBoxLayout(widget)
+        self.layout = QVBoxLayout()
 
         # Create the individual graph views
         self.bar_graph = BarGraph(data)
@@ -186,23 +185,7 @@ class GraphicsStatsWindow(QMainWindow):
         self.timeline_view = TimelineGraph(data)
 
         # Add each graph to the layout
-        layout.addWidget(self.bar_graph)
-        layout.addWidget(self.pie_graph)
-        layout.addWidget(self.timeline_view)
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    # Sample Data (App usage with timestamps)
-    sample_data = [
-        {"appName": "Code.exe", "time": 7},
-        {"appName": "firefox.exe", "time": 12},
-        {"appName": "Code.exe", "time": 10},
-        {"appName": "chrome.exe", "time": 8},
-        {"appName": "Code.exe", "time": 5},
-    ]
-
-    window = GraphicsStatsWindow(sample_data)
-    window.show()
-    sys.exit(app.exec_())
+        self.layout.addWidget(self.bar_graph)
+        self.layout.addWidget(self.pie_graph)
+        self.layout.addWidget(self.timeline_view)
+        self.setLayout(self.layout)

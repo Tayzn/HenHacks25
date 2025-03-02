@@ -1,4 +1,4 @@
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, QObject
 
 class FocusSession():
   def __init__(self, app):
@@ -22,9 +22,11 @@ class FocusSession():
   def close(self):
     self.timer.stop()
     self.app.get_window("MainWindow").focusButton.setText("Start Focus Mode")
+    self.app.show_window("GraphicDisplay", self.appTimeline)
 
-class FocusManager():
+class FocusManager(QObject):
   def __init__(self, app):
+    super().__init__()
     self.focusMode = False
     self.app = app
     self.currentSession = None
