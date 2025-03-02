@@ -54,7 +54,7 @@ class WindowTracker(QObject):
     self.whitelistedApps.add(this_process)
 
     currentWindow = self.app.get_app_task("PollingThread").get_active_window_name()
-    self.window_changed(currentWindow)
+    self.window_changed(currentWindow, self.app.get_app_task("PollingThread").signal)
     
     mainWindowPreview = self.app.get_window("MainWindow").whitelistPreview
     mainWindowPreview.clear()
