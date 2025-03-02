@@ -56,6 +56,7 @@ class MainWindow(QMainWindow):
         self.musicVolumeSlider = self.findChild(QSlider, "musicVolumeSlider")
         self.musicTitleLabel = self.findChild(QLabel, "musicLabel")
         self.musicVolumeLabel = self.findChild(QLabel, "musicVolumeLabel")
+        self.focusButton = self.findChild(QPushButton, "focusMode")
 
         self.musicVolumeLabel.setText(f"Volume: {self.musicVolumeSlider.value()}%")
 
@@ -78,6 +79,7 @@ class MainWindow(QMainWindow):
         self.whitelistButton.clicked.connect(self.show_whitelist_dialog)
         self.musicBrowseBtn.clicked.connect(self.on_music_browse)
         self.musicPlayPauseBtn.clicked.connect(self.on_music_playpause)
+        self.focusButton.clicked.connect(self.app.get_app_task("FocusManager").toggle_focus_mode)
         self.musicVolumeSlider.valueChanged.connect(self.on_music_volume_change)
 
         # Timers
