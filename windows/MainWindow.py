@@ -308,8 +308,12 @@ class MainWindow(QMainWindow):
         QApplication.quit()
 
     def tray_icon_clicked(self, reason):
-        if reason == QSystemTrayIcon.ActivationReason.Trigger:
-            self.show_window()
+        if reason == QSystemTrayIcon.ActivationReason.Trigger:  # Left-click event
+            if self.isVisible():
+                self.hide()  # Minimize to tray
+            else:
+                self.showNormal()  # Restore window
+                self.activateWindow()
 
     def move_to_bottom_right(self):
         """Move the window to the bottom-right corner of the screen."""
