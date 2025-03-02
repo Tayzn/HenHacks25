@@ -1,7 +1,7 @@
 import os
 from PyQt6.QtWidgets import QApplication
 
-from modules import polling, windowTracker
+from modules import polling, windowTracker, focusManager
 from windows.MainWindow import MainWindow
 from windows.RadioBrowserDialog import RadioBrowserDialog
 from windows.WhitelistDialog import WhitelistDialog
@@ -26,7 +26,8 @@ class App():
 
     self.appTasks = {
       "WindowTracker": windowTracker.WindowTracker(self),
-      "PollingThread": polling.PollingThread(self)
+      "PollingThread": polling.PollingThread(self),
+      "FocusManager": focusManager.FocusManager(self)
     }
     self.appTasks["PollingThread"].start()
     self.appTasks["PollingThread"].signal.connect(self.display_alert)
