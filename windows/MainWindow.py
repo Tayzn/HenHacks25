@@ -1,9 +1,4 @@
-import os
-import sys
-from datetime import datetime, timedelta
-
 import vlc
-from apscheduler.schedulers.background import BackgroundScheduler
 from PyQt6 import uic
 from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QTime, QTimer, QUrl
 from PyQt6.QtGui import QAction, QGuiApplication, QIcon
@@ -20,7 +15,6 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QSlider,
     QSystemTrayIcon,
-    QTimeEdit,
 )
 
 UI_FILE = "././ui/main.ui"
@@ -65,11 +59,8 @@ class MainWindow(QMainWindow):
 
         self.musicVolumeLabel.setText(f"Volume: {self.musicVolumeSlider.value()}%")
 
-        self.reminder_input = self.findChild(QLineEdit, "reminderInput")
         self.reminder_list = self.findChild(QListWidget, "reminderList")
         self.add_reminder_button = self.findChild(QPushButton, "addReminderButton")
-        self.reminder_time_edit = self.findChild(QTimeEdit, "reminderTimeEdit")
-        self.reminder_time_edit.setDisplayFormat("HH:mm")
 
         # Pomodoro Timer UI
         self.pomodoro_timer_label = self.findChild(QLabel, "pomodoroTimer")
@@ -80,7 +71,7 @@ class MainWindow(QMainWindow):
         # Connect Buttons
         self.add_task_button.clicked.connect(self.add_task)
         self.clear_checked_button.clicked.connect(self.clear_checked_tasks)
-        self.add_reminder_button.clicked.connect(self.add_reminder)
+        self.add_reminder_button.clicked.connect(self.new_reminder_dialog)
         self.start_pomodoro_button.clicked.connect(self.start_pause_pomodoro)
         self.reset_pomodoro_button.clicked.connect(self.reset_pomodoro)
         self.whitelistButton.clicked.connect(self.show_whitelist_dialog)
@@ -92,10 +83,6 @@ class MainWindow(QMainWindow):
         self.pomodoro_timer = QTimer(self)
         self.pomodoro_timer.timeout.connect(self.update_pomodoro_display)
         # self.pomodoro_timer.start(1000)
-
-        self.reminder_timer = QTimer(self)
-        self.reminder_timer.timeout.connect(self.check_reminders)
-        self.reminder_timer.start(60000)
 
         self.clock_timer = QTimer(self)
         self.clock_timer.timeout.connect(self.update_clock)
@@ -122,10 +109,6 @@ class MainWindow(QMainWindow):
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(500)
         self.animation.setEasingCurve(QEasingCurve.Type.InBounce)
-
-        # Scheduler for Pomodoro
-        self.scheduler = BackgroundScheduler()
-        self.scheduler.start()
 
         self.reminders = []
 
@@ -205,6 +188,7 @@ class MainWindow(QMainWindow):
 
     def update_clock(self):
         self.time_label.setText(QTime.currentTime().toString("hh:mm:ss a"))
+        self.check_reminders()
 
     def add_task(self):
         task = self.task_input.text().strip()
@@ -219,16 +203,16 @@ class MainWindow(QMainWindow):
             self.task_list.addItem(item)
             self.task_input.clear()
 
-    def add_reminder(self):
-        reminder_text = self.reminder_input.text().strip()
-        reminder_time = self.reminder_time_edit.time().toString("HH:mm")
-        if reminder_text:
-            self.reminders.append((reminder_time, reminder_text))
-            self.reminder_list.addItem(f"{reminder_time} - {reminder_text}")
-            self.reminder_input.clear()
+    def new_reminder_dialog(self):
+        self.app.show_window("ReminderDialog")
+
+    def add_reminder(self, text, time):
+        time_str = time.toString("hh:mm a")
+        self.reminders.append((time_str, text))
+        self.reminder_list.addItem(f"{time_str} - {text}")
 
     def check_reminders(self):
-        current_time = QTime.currentTime().toString("HH:mm")
+        current_time = QTime.currentTime().toString("hh:mm a")
         for reminder_time, reminder_text in self.reminders:
             if reminder_time == current_time:
                 self.show_reminder_dialog(reminder_text)

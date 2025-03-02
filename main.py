@@ -1,9 +1,11 @@
 import os
+
 from PyQt6.QtWidgets import QApplication
 
-from modules import polling, windowTracker, focusManager
+from modules import focusManager, polling, windowTracker
 from windows.MainWindow import MainWindow
 from windows.RadioBrowserDialog import RadioBrowserDialog
+from windows.ReminderDialog import ReminderDialog
 from windows.WhitelistDialog import WhitelistDialog
 
 
@@ -15,51 +17,54 @@ def load_stylesheet(qObject, filename):
     else:
         print(f"Error: Stylesheet '{filename}' not found!")
 
-class App():
-  def __init__(self):
-    self.start()
 
-  def start(self):
-    app = QApplication([])
-    self.instance = app.instance()
-    self.pid = app.applicationPid()
+class App:
+    def __init__(self):
+        self.start()
 
-    self.appTasks = {
-      "WindowTracker": windowTracker.WindowTracker(self),
-      "PollingThread": polling.PollingThread(self),
-      "FocusManager": focusManager.FocusManager(self)
-    }
-    self.appTasks["PollingThread"].start()
-    self.appTasks["PollingThread"].signal.connect(self.display_alert)
+    def start(self):
+        app = QApplication([])
+        self.instance = app.instance()
+        self.pid = app.applicationPid()
 
-    self.windows = {
-      "MainWindow": MainWindow(self),
-      "WhitelistDialog": WhitelistDialog(self),
-      "RadioBrowserDialog": RadioBrowserDialog(self),
-    }
-    for window in self.windows.values():
-       load_stylesheet(window, "./assets/style.qss")
+        self.appTasks = {
+            "WindowTracker": windowTracker.WindowTracker(self),
+            "PollingThread": polling.PollingThread(self),
+            "FocusManager": focusManager.FocusManager(self),
+        }
+        self.appTasks["PollingThread"].start()
+        self.appTasks["PollingThread"].signal.connect(self.display_alert)
 
-    self.windows["MainWindow"].show()
+        self.windows = {
+            "MainWindow": MainWindow(self),
+            "WhitelistDialog": WhitelistDialog(self),
+            "RadioBrowserDialog": RadioBrowserDialog(self),
+            "ReminderDialog": ReminderDialog(self),
+        }
+        for window in self.windows.values():
+            load_stylesheet(window, "./assets/style.qss")
 
-    app.exec()
+        self.windows["MainWindow"].show()
 
-  def get_app_task(self, task_name):
-    return self.appTasks[task_name]
-  
-  def start_task(self, task_name):
-    self.appTasks[task_name].start()
+        app.exec()
 
-  def stop_task(self, task_name):
-    self.appTasks[task_name].quit()
+    def get_app_task(self, task_name):
+        return self.appTasks[task_name]
 
-  def show_window(self, window_name):
-    self.windows[window_name].show()
+    def start_task(self, task_name):
+        self.appTasks[task_name].start()
 
-  def get_window(self, window_name):
-    return self.windows[window_name]
-  
-  def display_alert(self):
-     self.get_window("MainWindow").show_unfocused_alert()
+    def stop_task(self, task_name):
+        self.appTasks[task_name].quit()
 
-App() # Entry
+    def show_window(self, window_name):
+        self.windows[window_name].show()
+
+    def get_window(self, window_name):
+        return self.windows[window_name]
+
+    def display_alert(self):
+        self.get_window("MainWindow").show_unfocused_alert()
+
+
+App()  # Entry
