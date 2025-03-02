@@ -17,24 +17,23 @@ def load_stylesheet(qObject, filename):
 
 class App():
   def __init__(self):
+    self.start()
+
+  def start(self):
+    app = QApplication([])
+    self.pid = app.applicationPid()
+
     self.appTasks = {
       "WindowTracker": windowTracker.WindowTracker(self),
       "PollingThread": polling.PollingThread(self)
     }
-
-    self.start()
-
-  def start(self):
     self.appTasks["PollingThread"].start()
-
-    app = QApplication([])
 
     self.windows = {
       "MainWindow": MainWindow(self),
       "WhitelistDialog": WhitelistDialog(self),
       "RadioBrowserDialog": RadioBrowserDialog(self),
     }
-
     for window in self.windows.values():
        load_stylesheet(window, "./assets/style.qss")
 

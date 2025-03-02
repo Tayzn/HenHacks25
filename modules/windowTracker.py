@@ -1,3 +1,4 @@
+import psutil
 from PyQt6.QtCore import QThread
 
 MAX_ALLOWED_TIME = 10 # seconds allowed on a non-whitelisted app
@@ -17,9 +18,10 @@ class AppTimerTask(QThread):
         break
 
 class WindowTracker():
-  def __init__(self, app, whitelist=[]):
+  def __init__(self, app, whitelist=set()):
     self.app = app
     self.whitelistedApps = whitelist
+    whitelist.add(psutil.Process(app.pid).name())
     self.currentTimeoutTask: AppTimerTask = None
 
   def window_changed(self, appName):
@@ -33,14 +35,19 @@ class WindowTracker():
       print("Changed to non-whitelisted app!", appName)
 
   def update_whitelist(self, whitelist):
-    self.whitelistedApps = whitelist
+    self.whitelistedApps = set(whitelist)
+    this_process = psutil.Process(self.app.pid).name()
+    self.whitelistedApps.add(this_process)
+
     currentWindow = self.app.get_app_task("PollingThread").get_active_window_name()
     self.window_changed(currentWindow)
     
     mainWindowPreview = self.app.get_window("MainWindow").whitelistPreview
     mainWindowPreview.clear()
     for whitelisted in whitelist:
+      if whitelisted == this_process: continue
       mainWindowPreview.addItem(whitelisted)
+    
 
 
 
