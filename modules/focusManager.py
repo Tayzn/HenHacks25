@@ -22,6 +22,7 @@ class FocusSession():
   def close(self):
     self.timer.stop()
     self.app.get_window("MainWindow").focusButton.setText("Start Focus Mode")
+    if len(self.appTimeline) <= 0: return
     self.app.show_window("GraphicDisplay", self.appTimeline)
 
 class FocusManager(QObject):

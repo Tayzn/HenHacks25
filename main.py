@@ -58,7 +58,6 @@ class App():
     self.appTasks[task_name].quit()
 
   def show_window(self, window_name, details=None):
-    if details and len(details) <= 0: return
     if window_name == "GraphicDisplay":
       new_window = GraphicsStatsWindow(details)
       new_window.exec()
